@@ -1,2 +1,3 @@
 # CS6011
-computer programing 
+computer programing purpose is to gain exeperience writing non-trivial software projects.  
+
