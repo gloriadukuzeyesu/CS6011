@@ -1,3 +1,3 @@
 # CS6011
-computer programing Assignments and class project
+computer programing purpose is to gain exeperience writing non-trivial software projects.  
 
