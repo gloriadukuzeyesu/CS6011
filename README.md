@@ -1,2 +1,3 @@
 # CS6011
-computer programing 
+computer programing Assignments and class project
+
