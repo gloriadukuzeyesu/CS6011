@@ -24,29 +24,29 @@ class FractionTest {
 
         // Test for Fraction plus
         Fraction f3 = f1.plus(f2);
-        Assertions.assertEquals(7/6, 7/6);
+        Assertions.assertEquals("7/6", f3.toString());
         System.out.println("The sum of " + f1 + " and " + f2 + " is " + f3 );
 
         // Test for minus
         Fraction f4 = f1.minus(f2);
-        Assertions.assertEquals(-11/6, -11/6);
-        System.out.println("The result from  subtracting" + f1 + " and " + f2 + " is " + f4);
+        Assertions.assertEquals("-11/6", f4.toString());
+        System.out.println("The result from  subtracting " + f1 + " and " + f2 + " is " + f4);
 
         // Test for times
         Fraction f5;
         f5 = f3.times(f1);
-        Assertions.assertEquals(-7/18, -7/18);
+        Assertions.assertEquals("-7/18" , f5.toString());
         System.out.println("The result from  multiplying "+ f3 + " with " + f1 + " is " + f5);
 
         //Test for dividedBy()
         Fraction f6 = f2.dividedBy(f1);
-        Assertions.assertEquals(-9/2, -4);
+        Assertions.assertEquals("-9/2", f6.toString());
         System.out.println("The result from  division of "+ f2 + " and " + f1 + " is " + f6);
 
 
         //Test for reciprocal()
         Fraction f7 = f2.reciprocal();
-        Assertions.assertEquals(2/3, 2/3);
+        Assertions.assertEquals("2/3", f7.toString());
         System.out.println("The reciprocal of " + f2+ " is " + f7);
 
 

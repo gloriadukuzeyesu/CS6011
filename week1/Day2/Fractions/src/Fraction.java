@@ -23,6 +23,7 @@ public class Fraction {
              numerator_ = numerator_ * -1 ;
              denominator_ = denominator_ * -1;
              }
+
     }
 
     // create the set and get for numerator and denominator
@@ -84,6 +85,7 @@ public class Fraction {
     //is the approximate value of this fraction, printed as a real number.
     //cast
     public double toDouble(){
+
         return (double) numerator_ / denominator_;
     }
 
@@ -110,17 +112,13 @@ public class Fraction {
             remainder = gcd % remainder;
             gcd = temp;
         }
-        return gcd;
+        return Math.abs(gcd);
     }
 
 
     private void reduce(){
         // determine the greatest common divisor
         long gcd = GCD(numerator_, denominator_);
-        // in case gcd is negative change it to positive
-        if (gcd < 0 ){
-            gcd = -gcd;
-        }
         //divide both numerator and denominator with gcd
         numerator_ = numerator_ / gcd;
         denominator_ = denominator_ / gcd;
