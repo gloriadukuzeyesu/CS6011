@@ -13,6 +13,7 @@ public class Fraction {
 
     // A constructor which sets the value of the fraction to a specific numerator (n) and denominator (d).
     public  Fraction ( long n, long d ) {
+        if( d == 0) throw new ArithmeticException("denominator can't be 0! ");
         numerator_ = n;
         denominator_ = d;
         reduce(); // simply the numerator  and denominator right away
