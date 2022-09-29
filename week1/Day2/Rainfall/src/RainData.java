@@ -1,5 +1,4 @@
 import org.w3c.dom.ls.LSOutput;
-
 import java.io.*;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ public class RainData {
     ArrayList<Double> rainInches;
     ArrayList<Double> monthAve = new ArrayList<>();
     // create an array  12 months in order. Jan, feb,march,april,...
-    String MyMonthsInOrder[] = new String[]{"January", "February", "April", "May", "June", "July", "August", "September",
+    String[] MyMonthsInOrder = new String[]{"January", "February", "April", "May", "June", "July", "August", "September",
             "October", "November", "December"};
 
     //constructor
@@ -39,8 +38,6 @@ public class RainData {
 
         double TotalRain = 0.00;
         int count = 0;
-        // create a helper to help set the rounding to 2 decimal places
-//        BigDecimal numb = new BigDecimal(TotalRain);
 
         for (String s : MyMonthsInOrder) {
             for (int k = 0; k < months.size(); k++) {
@@ -53,19 +50,17 @@ public class RainData {
         }
     }
 
+
     //function to write into a file
     public void WriteToFile() throws IOException {
         PrintWriter myPrintWriter = new PrintWriter("rainfall_results.txt");
 
-        for (int i = 0; i < MyMonthsInOrder.length; i++)
-        {
-//            myPrintWriter.printf( "The overall average rainfall amount for " + MyMonthsInOrder[i] + " is "+ "%.2f" + monthAve.get(i) + "\n");
+        for (int i = 0; i < MyMonthsInOrder.length; i++) {
             myPrintWriter.printf( "The overall average rainfall amount for %s is %.2f inches.\n", MyMonthsInOrder[i], monthAve.get(i));
         }
         System.out.println("Successfully written");
         myPrintWriter.close();
     }
-
 }
 
 
