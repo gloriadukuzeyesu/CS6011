@@ -15,8 +15,7 @@ public class RainData {
     // create an array  12 months in order. Jan, feb,march,april,...
     String MyMonthsInOrder[] = new String[]{"January", "February", "April", "May", "June", "July", "August", "September",
             "October", "November", "December"};
-
-
+    
     //constructor
     public RainData() {
     }
@@ -36,7 +35,6 @@ public class RainData {
             years.add(scan.nextInt());
             rainInches.add(scan.nextDouble());
         }
-
 
         double TotalRain = 0.00;
         int count = 0;
@@ -59,18 +57,13 @@ public class RainData {
         FileWriter myWriter = new FileWriter("rainfall_results.txt");
         double averageRainFall = 0.0;
 
-        for (int i = 0; i < MyMonthsInOrder.length; i++) {
-
+        for (int i = 0; i < MyMonthsInOrder.length; i++)
+        {
             myWriter.write ( "The overall average rainfall amount for " + MyMonthsInOrder[i] + " is "+ monthAve.get(i) + "\n");
         }
-
-
         System.out.println("Successfully written");
         myWriter.close();
     }
-
-    // function to find the average of each month
-
 
 }
 
