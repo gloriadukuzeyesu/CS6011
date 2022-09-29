@@ -16,32 +16,22 @@ public class Fraction {
         if( d == 0) throw new ArithmeticException("denominator can't be 0! ");
         numerator_ = n;
         denominator_ = d;
-        reduce(); // simply the numerator  and denominator right away
-         if ( numerator_ < 0 && denominator_ < 0) {
-             numerator_ = numerator_ * -1;
-             denominator_ = denominator_ * -1;
-         }else if ( denominator_ < 0 ){
+        reduce();
+        // simply the numerator  and denominator right away
+         if ( denominator_ < 0 ){
              numerator_ = numerator_ * -1 ;
              denominator_ = denominator_ * -1;
              }
 
     }
 
-    // create the set and get for numerator and denominator
+    // create the get for numerator and denominator
     public long getNumerator (){
         return numerator_;
     }
 
     public long getDenominator() {
         return denominator_;
-    }
-
-    public void setNumerator (long numerator) {
-        numerator_ = numerator;
-    }
-
-    public void setDenominator ( long denominator) {
-        denominator_ = denominator;
     }
 
     // add fractions together
@@ -86,23 +76,8 @@ public class Fraction {
     //is the approximate value of this fraction, printed as a real number.
     //cast
     public double toDouble(){
-
         return (double) numerator_ / denominator_;
     }
-
-   // repetitive division
-
-//    private  long GCD( long numerator, long denominator){
-//        if ( (numerator % denominator) == 0 ){
-//            return denominator;
-//        }
-//        else {
-//            // call the GCD() again as long as (numerator % denominator) != 0
-//            // replace the denominator with numerator % denominator
-//            return  GCD(denominator, numerator % denominator);
-//        }
-//    }
-
 
 
     private long GCD (long numerator, long denominator) {
