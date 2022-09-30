@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class HTTPServer {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, FileNotFoundException {
         // 1. listen from port 8080
         int PortNumber = 8080;
         // 2. set up a connection to a client. create a server socket and bind it to a specific port number
@@ -51,13 +51,15 @@ public class HTTPServer {
              filename = "resources/" + filename;
 
             //10. check if the file exist
+
             File file = new File(filename);
             String results;
             if (file.exists()) {
-                results = " 200 sucess";
+                results = " 200 success";
             }
             else {
                 results = " 404 not found";
+//                file = new File("notFound.html");
             }
 
             //11. send the response header via outputstream
@@ -76,9 +78,14 @@ public class HTTPServer {
             ServerWriter.flush(); // write the content of buffer to the client and empty the buffer to store further data
 
             //12. send the data from the file at all once using Transfer to(). create a new inputStream and use the outputstream used to send the header information
-             FileInputStream fileInputStream = new FileInputStream(file);
-             fileInputStream.transferTo(StreamOut);
-
+             try {
+                 FileInputStream fileInputStream = new FileInputStream(file);
+                 fileInputStream.transferTo(StreamOut);
+             }
+             catch(FileNotFoundException e)
+             {
+                 System.out.println("File not found");
+             }
              ServerWriter.flush(); //  write the content and clears out the buffer.
              clientSocket.close();
          }
