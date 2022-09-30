@@ -1,47 +1,36 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class HTTPServer {
-    public static void main(String[] args)  {
-        //  1.listen from port 8080
+    public static void main(String[] args) throws IOException {
+        // 1. listen from port 8080
         // 2. set up a connection to a client. create a server socket and bind it to a specific port number
         ServerSocket serverSocket = null;
         try {
-                serverSocket = new ServerSocket(8080);
-            }
-            catch (IOException e) {
-                throw new RuntimeException(e);
+            serverSocket = new ServerSocket(8080);
+        }
+        catch (IOException e){
+            System.out.println("Failed to connect to the port number");
         }
 
-        try {
+        while (true) {
+            // handle the case in case it fails to connect to the client
+            try {
+                /* 3. listen  a connection from the client and accept it. this results into a client socket being created for connection */
+                assert serverSocket != null;
 
-            while (true) {
+                Socket clientSocket = serverSocket.accept(); // accepting connection from a client
+                //The accept method waits until a client starts up and requests a connection on the host and port of this server.
 
-                // try and catch when you can't talk to the client
-                String inputLine = null;
-                Scanner Scanning = null;
-                Socket clientSocket = null;
+                //4. Read data from the client via an InputStream obtained from the client socket
+                InputStream StreamIn = clientSocket.getInputStream();
+                Scanner Scanning = new Scanner(StreamIn); // scanning the request from the client because the inputstream is just bytes.
 
-                // handle an exception where is no  successful connection to client
-                try {
-                    /* 3. listen  a connection from the client and accept it. this results into a client socket being created for connection */
-                    clientSocket = serverSocket.accept();
-                    //The accept method waits until a client starts up and requests a connection on the host and port of this server.
-
-                    //4. Read data from the client via an InputStream obtained from the client socket
-                    InputStream StreamIn = clientSocket.getInputStream();
-                    Scanning = new Scanner(StreamIn);
-
-                    //5. read in the request line by line. The first request line contains some bacis information on the request which includes filename at the second position
-                    inputLine = Scanning.nextLine();
-                } catch (SocketTimeoutException ste) {
-                    System.out.println(" failed to connect to the client"); // failed to create a client socket
-                }
-
+                //5. read in the request line by line. The first request line contains some bacis information on the request which includes filename at the second position
+                String inputLine = Scanning.nextLine();
                 System.out.println(inputLine);
 
                 // 6. slit the fistline and grab the second string.--> the filename
@@ -75,10 +64,9 @@ public class HTTPServer {
                 File file = new File(filename);
                 String results;
                 if (file.exists()) {
-                    results = " 200 success";
+                    results = " 200 sucess";
                 } else {
                     results = " 404 not found";
-//                file = new File("notFound.html");
                 }
 
                 //11. send the response header via outputstream
@@ -97,20 +85,25 @@ public class HTTPServer {
                 ServerWriter.flush(); // write the content of buffer to the client and empty the buffer to store further data
 
                 //12. send the data from the file at all once using Transfer to(). create a new inputStream and use the outputstream used to send the header information
+
+                //TODO handle situation when the file doesn't exist
+
+                // handle the situation where the client request a file that doesn't exist
+                FileInputStream fileInputStream = null;
                 try {
-                    FileInputStream fileInputStream = new FileInputStream(file);
+                    fileInputStream = new FileInputStream(file);
                     fileInputStream.transferTo(StreamOut);
                 } catch (FileNotFoundException e) {
                     System.out.println("File not found");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
+
                 ServerWriter.flush(); //  write the content and clears out the buffer.
                 clientSocket.close();
             }
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
+            catch (IOException e)
+            {
+                System.out.println(" Failed to connect the client");
+            }
         }
     }
 }
