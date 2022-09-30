@@ -1,3 +1,4 @@
+The overall average rainfall amount for Macon.txt is 3.42.
 The overall average rainfall amount for January is 3.65 inches.
 The overall average rainfall amount for February is 3.91 inches.
 The overall average rainfall amount for April is 3.72 inches.

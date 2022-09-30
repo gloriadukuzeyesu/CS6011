@@ -1,4 +1,6 @@
 import org.w3c.dom.ls.LSOutput;
+
+import javax.print.MultiDocPrintJob;
 import java.io.*;
 import java.sql.SQLOutput;
 import java.util.ArrayList;
@@ -7,7 +9,7 @@ import java.util.Scanner; // import the scanner class
 
 public class RainData {
 
-    String fileName = "/Users/gloriadukuzeyesu/MSD/CS6011/week1/Day2/Rainfall/Macon.txt";
+    String fileName;
     ArrayList<String> months;
     ArrayList<Integer> years;
     ArrayList<Double> rainInches;
@@ -15,9 +17,13 @@ public class RainData {
     // create an array  12 months in order. Jan, feb,march,april,...
     String[] MyMonthsInOrder = new String[]{"January", "February", "April", "May", "June", "July", "August", "September",
             "October", "November", "December"};
+    //sum of all the rainInches in the city
+    static double overallAverage = 0;
+
 
     //constructor
-    public RainData() {
+    public RainData(String fileName) {
+        this.fileName = fileName;
     }
 
     //method to read in file
@@ -48,16 +54,26 @@ public class RainData {
             }
             monthAve.add(TotalRain / count);
         }
+
+        //find the average of all rain in each city. by either using rainInches and add all rain together divide by the number of lines in the file
+        for ( double d : monthAve) {
+            overallAverage += d;
+        };
+        overallAverage /= 12;
+
     }
 
 
     //function to write into a file
     public void WriteToFile() throws IOException {
         PrintWriter myPrintWriter = new PrintWriter("rainfall_results.txt");
+//        myPrintWriter.println( "The overall average rainfall amount for " + fileName + "is " + overallAverage);
+        myPrintWriter.printf("The overall average rainfall amount for %s is %.2f.\n", fileName, overallAverage);
 
         for (int i = 0; i < MyMonthsInOrder.length; i++) {
-            myPrintWriter.printf( "The overall average rainfall amount for %s is %.2f inches.\n", MyMonthsInOrder[i], monthAve.get(i));
+            myPrintWriter.printf("The overall average rainfall amount for %s is %.2f inches.\n", MyMonthsInOrder[i], monthAve.get(i));
         }
+
         System.out.println("Successfully written");
         myPrintWriter.close();
     }
