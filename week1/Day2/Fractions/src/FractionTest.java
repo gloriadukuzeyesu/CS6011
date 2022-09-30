@@ -49,6 +49,13 @@ class FractionTest {
         Assertions.assertEquals("2/3", f7.toString());
         System.out.println("The reciprocal of " + f2+ " is " + f7);
 
+        // Test for a  try/catch throwing an exception
+        try {
+            Fraction f8 = new Fraction(3,0);
+        }
+        catch ( ArithmeticException e) {
+            System.out.println(e);
+        }
 
     }
 
