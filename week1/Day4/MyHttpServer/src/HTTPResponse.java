@@ -21,19 +21,18 @@ public class HTTPResponse {
             System.out.println("Failed to connect to the port");
         }
 
+        String FileName = HTTPRequest.filename; // access static variable via classname
 
         while (true)
         {
 
-//            HTTPRequest httpRequest = new HTTPRequest();
-            String FileName = HTTPRequest.filename; // access static variable via classname
-
-
             try {
                 ClientSocket = serverSocket.accept();
+
                 if ( FileName.equals("/")){
                     FileName = "index.html";
                 }
+
                 FileName = "/resources" + FileName;
 
                 //check if the file exist

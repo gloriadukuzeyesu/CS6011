@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
+import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -13,19 +14,32 @@ public class HTTPRequest {
         InputStream inputStream = null;
         Socket ClientSocket = null;
 
-
         try {
 
             ClientSocket = new Socket("localhost", 8080);
 
+            System.out.println("successfully connected");
+
 
             while (true) {
+
+//                ClientSocket = new Socket("localhost", 8080);
 
                 inputStream = ClientSocket.getInputStream();
 
                 Scanner scan = new Scanner(inputStream);
 
-                String inputLine = scan.nextLine(); // scan the first line and extract the filename from it
+                System.out.println("Scanning in process ");
+
+                String inputLine = "";
+
+                if ( scan.hasNextLine()) {
+                     inputLine = scan.nextLine(); // scan the first line and extract the filename from it
+                }
+                else{
+                    System.out.println("No line found");
+                }
+
 
 //                String filename = "";
                 String[] My_split = inputLine.split(" "); // split at the space. to get three pieces (GET, PATH, and, Protocol). Path is filename
