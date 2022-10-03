@@ -8,11 +8,15 @@ import java.util.Scanner;
 public class HTTPRequest {
 
     public static String filename;
+    Socket ClientSocket;
+
+    HTTPRequest() {
+        ClientSocket
+    }
 
     public static void main (String[] args) {
 
         InputStream inputStream = null;
-        Socket ClientSocket = null;
 
         try {
 

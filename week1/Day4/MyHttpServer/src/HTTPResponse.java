@@ -16,7 +16,6 @@ public class HTTPResponse {
 
         try {
             serverSocket = new ServerSocket(8080);
-
         } catch (IOException e){
             System.out.println("Failed to connect to the port");
         }
