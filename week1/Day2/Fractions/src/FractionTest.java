@@ -1,6 +1,10 @@
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
 class FractionTest {
 
     @Test
@@ -57,6 +61,25 @@ class FractionTest {
             System.out.println(e);
         }
 
+
+        // Test for void sort()
+        ArrayList<Fraction> CompareFraction = new ArrayList<>();
+        Fraction f10 = new Fraction(1, 2);
+        Fraction f11 = new Fraction(1, 5);
+        Fraction f12 = new Fraction(3, 4);
+
+        CompareFraction.add(f10);
+        CompareFraction.add(f11);
+        CompareFraction.add(f12);
+
+        Collections.sort(CompareFraction);
+
+        Assertions.assertEquals(CompareFraction.get(0), f11);
+        Assertions.assertEquals(CompareFraction.get(1), f10);
+        Assertions.assertEquals(CompareFraction.get(2), f12);
+
+
     }
 
-}
+    }
+

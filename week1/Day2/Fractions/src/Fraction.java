@@ -1,6 +1,7 @@
 import org.jetbrains.annotations.NotNull;
+import java.lang.Comparable;
 
-public class Fraction {
+public class Fraction implements Comparable<Fraction>{
     //declaration of variables
     long numerator_;
     long denominator_;
@@ -101,5 +102,15 @@ public class Fraction {
         //divide both numerator and denominator with gcd
         numerator_ = numerator_ / gcd;
         denominator_ = denominator_ / gcd;
+    }
+
+    public int compareTo ( Fraction rhs) {
+
+        if ( this.toDouble() < rhs.toDouble()){
+            return -1;
+        }else if ( this.toDouble() > rhs.toDouble()) {
+            return +1;
+        }else
+        return 0;
     }
 }
