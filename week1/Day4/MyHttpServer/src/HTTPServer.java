@@ -28,17 +28,13 @@ public class HTTPServer {
                 //4. Read data from the client via an InputStream obtained from the client socket
                 InputStream StreamIn = clientSocket.getInputStream();
 
-                //handle the request
-
-                //HTTPRequest request = new HTTPRequest()
-
                 Scanner Scanning = new Scanner(StreamIn); // scanning the request from the client because the inputstream is just bytes.
 
                 //5. read in the request line by line. The first request line contains some bacis information on the request which includes filename at the second position
                 String inputLine = Scanning.nextLine();
                 System.out.println(inputLine);
 
-                // 6. slit the fistline and grab the second string.--> the filename
+                // 6. slit the firstline and grab the second string.--> the filename
                 String filename = "";
                 String[] My_split = inputLine.split(" "); // split at the space. to get three pieces (GET, PATH, and, Protocol). Path is filename
                 filename = My_split[1];
@@ -86,6 +82,7 @@ public class HTTPServer {
 
                 //11. send the response header via outputstream
                 OutputStream StreamOut = clientSocket.getOutputStream();
+                System.out.println("client"+clientSocket);
                 PrintWriter ServerWriter = new PrintWriter(StreamOut); // output stream to write to the client
 
                 ServerWriter.println("HTTP/1.1" + results);
