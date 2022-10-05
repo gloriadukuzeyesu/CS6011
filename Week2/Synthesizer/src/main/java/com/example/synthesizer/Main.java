@@ -6,6 +6,7 @@ import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -21,18 +22,27 @@ public class Main {
         AudioClip clip = gen.getClip();
 
         /*  Test to adjust the Volume  */
-           Volume MyVolume = new Volume(.9);
-           AudioComponent NewSineWave = new SineWave(220);
+           Volume MyVolume = new Volume(1);
+           AudioComponent NewSineWave = new SineWave(250);
            MyVolume.connectInput(NewSineWave);
            AudioClip clip2 = MyVolume.getClip();
 
+       /*  test for mixer, use the already created sine wave, gen and newSineWave */
+        Mixer myMixer = new Mixer();
+        myMixer.connectInput(NewSineWave);
+        myMixer.connectInput(gen);
+
+        AudioClip mixerOut = myMixer.getClip();
+        AudioClip mixClip = myMixer.getClip();
+
+        c.open(format16, clip2.getData(), 0,clip2.getData().length);
 
         /* Opens the clip, meaning that it should acquire any required system resources and become operational.*/
-        c.open(format16, clip2.getData(), 0,clip2.getData().length);
+        /* c.open(format16, clip2.getData(), 0,clip2.getData().length); */
 
         System.out.println("About to play ");
         c.start(); // Plays it.
-        c.loop(0); // Plays it 2 more times if desired, so 6 seconds total
+        c.loop(1); // Plays it 2 more times if desired, so 6 seconds total
         while ( c.getFramePosition() < AudioClip.TotalSamples || c.isActive() || c.isRunning() ) {
             // Do nothing while we wait for the note to play.
         }

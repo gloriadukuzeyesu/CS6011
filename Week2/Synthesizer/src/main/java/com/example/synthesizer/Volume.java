@@ -3,7 +3,7 @@ package com.example.synthesizer;
 public class Volume implements AudioComponent{
 
     double volumeScale;
-    AudioComponent input_; // from the interface AudioComponent
+    AudioComponent input_; // from the interface AudioComponent how to bring in your sineWave
 
     // constructor
     Volume(double vol ) {

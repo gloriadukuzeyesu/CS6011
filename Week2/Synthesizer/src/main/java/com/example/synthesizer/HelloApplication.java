@@ -6,7 +6,12 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -14,8 +19,52 @@ import java.io.IOException;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        /*
+           FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+         */
+
+        AnchorPane root = new AnchorPane();
+
+        Scene scene = new Scene( root, 440, 300);
+
+        //creat an audion component  as verticle box
+
+        VBox componentWidget = new VBox();
+        componentWidget.setStyle ("-fx-background-color: purple");
+
+        Label title = new Label();
+        title.setText("I am red for the cool music.Sine wave(440HZ)");
+
+        componentWidget.getChildren().add(title);
+
+        // how to set the widget on different location on the screen
+        componentWidget.relocate(50, 100);
+
+        // ability to move the box and move around this around the screen
+        componentWidget.setOnMousePressed( e -> handleMOusePressed (e) );
+
+        // add a slider that can be moved around
+        Slider slider = new Slider(220,880,4440 );
+        componentWidget.getChildren().add(slider);
+
+//        slider.setOnMouseDragged(e -> handleSlider (e) );
+
+
+
+
+
+
+        //1. get the children and add
+
+        root.getChildren().add(componentWidget);
+
+        // write once and odo not worry about it
+        stage.setScene(scene);
+        stage.show();
+
+
+
 
 
         // TODO how to create GUI
@@ -49,6 +98,21 @@ public class HelloApplication extends Application {
 
 
 
+    }
+
+
+
+    private void handleSlider(MouseEvent e, Slider slider, Label Title ) {
+       int value = (int) slider.getValue();
+       // TODO check on the title
+//       title.setText("Sine wave" + value + "HZ");
+
+
+
+    }
+
+    private void handleMOusePressed(MouseEvent e) {
+        System.out.println("Mouse was pressed " );
     }
 
     public static void main(String[] args) {
