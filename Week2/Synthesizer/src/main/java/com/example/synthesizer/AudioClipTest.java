@@ -2,24 +2,25 @@ package com.example.synthesizer;
 
 import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+
+
 class AudioClipTest {
 
-    @Test
-    public void runAllTes() {
+    public static void main(String[] args) {
+
          getSample();
          setSample();
 //         getData();
         testAudioClip();
     }
 
-    @Test
-    void getSample() {
+    static void getSample() {
         AudioClip test = new AudioClip();
 
         int index = 5;
@@ -31,8 +32,7 @@ class AudioClipTest {
         Assertions.assertEquals(maxValue, testMaxValue);
     }
 
-    @Test
-    void setSample(){
+    static void setSample(){
         AudioClip test2 = new AudioClip();
 
         short maxValue = Short.MAX_VALUE;
@@ -52,8 +52,7 @@ class AudioClipTest {
 
     }
 
-    @Test
-    public void testAudioClip() {
+    public static void testAudioClip() {
         AudioClip clip = new AudioClip();
         for (int i = Short.MIN_VALUE, j = 0; i <= Short.MAX_VALUE; i++, j++) {
             clip.setSample(j, (short) i);

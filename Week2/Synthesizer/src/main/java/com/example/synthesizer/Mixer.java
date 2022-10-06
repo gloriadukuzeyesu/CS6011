@@ -20,7 +20,7 @@ public class Mixer implements AudioComponent {
                 OutPutClip.setSample(j, (short) (OutPutClip.getSample(j) + clip.getSample(j)));
             }
         }
-        return OutPutClip;
+        return OutPutClip; // TODO call the clamping as here
     }
 
 

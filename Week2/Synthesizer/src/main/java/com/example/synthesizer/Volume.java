@@ -26,6 +26,7 @@ public class Volume implements AudioComponent{
                 adjustedVolume = Short.MIN_VALUE;
             }
             AdjustedClip.setSample(i, (short) adjustedVolume);
+            // Todo create a clamp () in the AudioComponent and call it here and in the mixer getClip()
         }
         return AdjustedClip;
     }

@@ -2,116 +2,116 @@ package com.example.synthesizer;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
+import javax.swing.plaf.synth.ColorType;
 import java.io.IOException;
+
+import static java.awt.Color.*;
 
 public class SynthesizeApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+
+        // Parent
+        BorderPane root = new BorderPane();
+        Scene scene = new Scene(root, 600, 400);
+
+
+        /*********************** right panel for the scene ***********************/
+        VBox rightPanel = new VBox();
+        rightPanel.setPadding(new Insets(5));
+        rightPanel.setSpacing(4);
+        rightPanel.setStyle("-fx-background-color: oldlace");
+
+        Button sineWaveButton = new Button("SineWave");
+        sineWaveButton.setTextFill(Color.BLACK);
+//        sineWaveButton.setStyle("-fx-background-color: green");
+        sineWaveButton.setOnAction(e-> createComponent("SineWave"));
+
+        Button volumeButton = new Button("Volume");
+        volumeButton.setStyle("-fx-background-color: yellow");
+
+        // add children of right panel
+        rightPanel.getChildren().add(sineWaveButton);
+        rightPanel.getChildren().add(volumeButton);
+
+
+
+        // bottom side of the panel
+        HBox buttonPanel = new HBox();
+        Button buttonPlayButton = new Button("PLAY");
+//        buttonPanel.getChildren().add(buttonPanel);
+
+
+        /*********************** center panel***********************/
+        mainCanvas_ = new AnchorPane();
+        mainCanvas_.setStyle("-fx-background-color: antiquewhite");
+
+        Circle speakerCircle = new Circle(400,200,15);
+        speakerCircle.setFill( Color.PURPLE );
+
+        mainCanvas_.getChildren().add( speakerCircle );
+
+
+
+
+
+
+
+
+
+        /// center of the
+
         /*
-        1. one parent object that contains child nodes
-        2. Display one scene
+        things to make the widget move
+        1. click on it
+        2. drag it around
+        3. keep track of the current location
+        3. let it go
          */
 
-        AnchorPane root = new AnchorPane();
+        // center portion of widget
 
-        Scene scene = new Scene( root, 440, 300);
+;
+        /*********************** Put all panels into the parent ***********************/
 
-        //creat an audion component  as verticle box
-
-        VBox componentWidget = new VBox();
-        componentWidget.setStyle ("-fx-background-color: purple");
-
-        Label title = new Label();
-        title.setText("I am red for the cool music.Sine wave(440HZ)");
-
-        componentWidget.getChildren().add(title);
-
-        // how to set the widget on different location on the screen
-        componentWidget.relocate(50, 100);
+        // put stuffs into the root container
+        root.setRight(rightPanel);
+        root.setBottom(buttonPanel);
+        root.setCenter(mainCanvas_);
+//        root.setBottom(buttonPlayButton);
 
 
-        // ability to move the box and move around this around the screen
-        componentWidget.setOnMousePressed( e -> handleMOusePressed (e) );
 
-        // add a slider that can be moved around
-        Slider slider = new Slider(220,880,4440 );
-        componentWidget.getChildren().add(slider);
-
-//        slider.setOnMouseDragged(e -> handleSlider (e) );
-
-        //1. get the children and add
-        root.getChildren().add(componentWidget);
-
-        // write once and odo not worry about it
+        stage.setTitle("My Synthesizer");
         stage.setScene(scene);
         stage.show();
 
 
-
-
-/*
-        // TODO how to create GUI
-        Button submit_b = new Button("submit ");
-        Button cancel_B = new Button("Cancel");
-
-        GridPane g1 = new GridPane();
-        // add our object to the layout
-        g1.add(submit_b,1, 1 ); // the first argument is the colum
-        g1.add(cancel_B, 1, 2);
-
-        Scene s1 = new Scene(g1, 500, 500);
-
-        // add the scene to the stage
-        stage.setScene(s1);
-        stage.show();
-
-
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
-
- */
-/*
-        EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                cancel_B.setText("text updated");
-            }
-
-            // add some cool feature like dragging
-        };
-
- */
-
-
-
     }
 
-
-
-    private void handleSlider(MouseEvent e, Slider slider, Label Title ) {
-       int value = (int) slider.getValue();
-       // TODO check on the title
-//       title.setText("Sine wave" + value + "HZ");
-
+    private void createComponent(String sineWave) {
+        System.out.println("Create Component");
     }
 
-    private void handleMOusePressed(MouseEvent e) {
-        System.out.println("Mouse was pressed " );
-    }
 
     public static void main(String[] args) {
-        Application.launch(SynthesizeApplication.class); // this will run my JavaFx GUI app, basically it will run the start()
+        launch();
+//        Application.launch(SynthesizeApplication.class); // this will run my JavaFx GUI app, basically it will run the start()
     }
+
+    private AnchorPane mainCanvas_;
+    public static Circle speaker;
 }

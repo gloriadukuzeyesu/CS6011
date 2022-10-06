@@ -25,7 +25,7 @@ public class Main {
         //c.open(format16, testClip.getData(), 0,testClip.getData().length);
 
         /*  Test to adjust the Volume  */
-       Volume MyVolume = new Volume(1.5);
+       Volume MyVolume = new Volume(1);
        AudioComponent NewSineWave = new SineWave(220);
        MyVolume.connectInput(NewSineWave);
        AudioClip myVolumeClip = MyVolume.getClip();
@@ -39,7 +39,7 @@ public class Main {
         MyVolume.connectInput(myMixer);
         AudioClip mixerOut = MyVolume.getClip();
         /*TODO uncomment to play the mixerOut clips*/
-        //c.open(format16, mixerOut.getData(), 0,mixerOut.getData().length);
+//        c.open(format16, mixerOut.getData(), 0,mixerOut.getData().length);
 
         /* test for linearRampAudioComponent  */
         AudioComponent liner_Ramp = new linearRamp(50, 20000);
@@ -61,6 +61,9 @@ public class Main {
 
         System.out.println("Done");
         c.close();
+
+        // create a listener whihc waits until the clip is closed and move the close () in the Audio listener() inside
+        // the update() methods, that will update the clip each time is it is played
 
     }
 }

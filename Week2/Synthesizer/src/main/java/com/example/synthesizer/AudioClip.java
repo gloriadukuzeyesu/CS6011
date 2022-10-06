@@ -7,7 +7,7 @@ public class AudioClip {
      static final double durationInSeconds = 2.0;
      static final int sampleRate = 44100;
      byte[] data;
-     short[] samples;
+//     short[] samples;
 
      public static int TotalSamples = (int) (durationInSeconds * sampleRate);
 

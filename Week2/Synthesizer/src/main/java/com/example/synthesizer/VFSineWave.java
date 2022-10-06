@@ -10,17 +10,14 @@ public class VFSineWave implements AudioComponent{
     VFSineWave () {
     }
 
-
-
-
     @Override
     public AudioClip getClip() {
         AudioClip vf_SineWave = new AudioClip();
         AudioClip inputClip = input_.getClip();
 
-        int phase = 0;
+        double phase = 0;
         for ( int i=0; i< AudioClip.TotalSamples; i++){
-            phase +=  (short) (2 * PI * inputClip.getSample(i) / AudioClip.sampleRate);
+            phase += (2 * PI * inputClip.getSample(i) / AudioClip.sampleRate);
             vf_SineWave.setSample (i , (short) (Short.MAX_VALUE * sin(phase)));
         }
         return vf_SineWave;
