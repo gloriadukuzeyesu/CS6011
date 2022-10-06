@@ -63,26 +63,30 @@ public class Main {
         * connect it to the vol
         *
         *  */
-        AudioComponent linearRampAudioComponent = new linearRamp(50, 2000);
-        AudioComponent linearSineWave = new SineWave(220);
-        Volume vol = new Volume (1.5);
-        vol.connectInput(linearSineWave);
+        AudioComponent liner_Ramp = new linearRamp(50, 20000);
 
-        linearRampAudioComponent.connectInput(linearSineWave);
+        VFSineWave vf_SineWave = new VFSineWave();
+        vf_SineWave.connectInput(liner_Ramp);
 
-        AudioClip linearWaveTestClip = vol.getClip();
+        Volume VolumeAdjuster = new Volume(1);
+
+        VolumeAdjuster.connectInput(vf_SineWave);
+
+        AudioClip linearClip = VolumeAdjuster.getClip();
+
+
 
 
 
         /* Opens the clip, meaning that it should acquire any required system resources and become operational.*/
 //        c.open(format16, mixerOut.getData(), 0,mixerOut.getData().length);
-        c.open(format16, linearWaveTestClip.getData(), 0,linearWaveTestClip.getData().length);
+        c.open(format16, linearClip.getData(), 0,linearClip.getData().length);
 //        c.open(format16, clip2.getData(), 0,clip2.getData().length);
 
 
         System.out.println("About to play ");
         c.start(); // Plays it.
-        c.loop(0); // Plays it 2 more times if desired, so 6 seconds total
+        c.loop(1); // Plays it 2 more times if desired, so 6 seconds total
         while ( c.getFramePosition() < AudioClip.TotalSamples || c.isActive() || c.isRunning() ) {
             // Do nothing while we wait for the note to play.
         }
