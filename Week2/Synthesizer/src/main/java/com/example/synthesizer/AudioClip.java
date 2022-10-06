@@ -30,7 +30,7 @@ public class AudioClip {
     // TODO convert a sample into two bytes and store them in data (byte[])
     public void setSample( int index, short value ){
         data[2*index] = (byte) (value & 0xff);
-        data[2*index +1] = (byte) ( value>>8);
+        data[2*index +1] = (byte) (( value>>8) & 0xff);
     }
 
     public byte[] getData(){

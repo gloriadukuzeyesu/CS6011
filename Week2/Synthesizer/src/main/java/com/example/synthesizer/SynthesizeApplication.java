@@ -3,7 +3,6 @@ package com.example.synthesizer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,12 +15,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class SynthesizeApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         /*
-           FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        1. one parent object that contains child nodes
+        2. Display one scene
          */
 
         AnchorPane root = new AnchorPane();
@@ -41,6 +40,7 @@ public class HelloApplication extends Application {
         // how to set the widget on different location on the screen
         componentWidget.relocate(50, 100);
 
+
         // ability to move the box and move around this around the screen
         componentWidget.setOnMousePressed( e -> handleMOusePressed (e) );
 
@@ -50,13 +50,7 @@ public class HelloApplication extends Application {
 
 //        slider.setOnMouseDragged(e -> handleSlider (e) );
 
-
-
-
-
-
         //1. get the children and add
-
         root.getChildren().add(componentWidget);
 
         // write once and odo not worry about it
@@ -66,7 +60,7 @@ public class HelloApplication extends Application {
 
 
 
-
+/*
         // TODO how to create GUI
         Button submit_b = new Button("submit ");
         Button cancel_B = new Button("Cancel");
@@ -87,6 +81,8 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
 
+ */
+/*
         EventHandler<ActionEvent> event1 = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -95,6 +91,8 @@ public class HelloApplication extends Application {
 
             // add some cool feature like dragging
         };
+
+ */
 
 
 
@@ -107,8 +105,6 @@ public class HelloApplication extends Application {
        // TODO check on the title
 //       title.setText("Sine wave" + value + "HZ");
 
-
-
     }
 
     private void handleMOusePressed(MouseEvent e) {
@@ -116,6 +112,6 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-        launch();
+        Application.launch(SynthesizeApplication.class); // this will run my JavaFx GUI app, basically it will run the start()
     }
 }

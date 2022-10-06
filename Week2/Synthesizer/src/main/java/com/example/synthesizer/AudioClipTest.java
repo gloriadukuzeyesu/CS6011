@@ -1,5 +1,6 @@
 package com.example.synthesizer;
 
+import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +15,7 @@ class AudioClipTest {
          getSample();
          setSample();
 //         getData();
+        testAudioClip();
     }
 
     @Test
@@ -27,7 +29,6 @@ class AudioClipTest {
         short testMaxValue = (short) test.getSample(index);
 
         Assertions.assertEquals(maxValue, testMaxValue);
-
     }
 
     @Test
@@ -38,13 +39,11 @@ class AudioClipTest {
         short minValue = Short.MIN_VALUE;
 
         ArrayList<Short> arrayListOfShort = new ArrayList<>();
-//        Random random = new Random();
-//        int oneValue;
         for ( int i = minValue; i<= maxValue; i++){
-//            oneValue = random.nextInt();
             arrayListOfShort.add((short) i);
         }
-//        System.out.println("Content of the arrayList are: " + arrayListOfShort);
+        /* System.out.println("Content of the arrayList are: " + arrayListOfShort); */
+
         //TODO this test contains the setSample(), getSample()
         for ( int i =0; i< arrayListOfShort.size(); i++){
             test2.setSample(i, arrayListOfShort.get(i));
@@ -52,6 +51,15 @@ class AudioClipTest {
         }
 
     }
+
+    @Test
+    public void testAudioClip() {
+        AudioClip clip = new AudioClip();
+        for (int i = Short.MIN_VALUE, j = 0; i <= Short.MAX_VALUE; i++, j++) {
+            clip.setSample(j, (short) i);
+            Assertions.assertEquals(clip.getSample(j), i);
+        }
+
 
     //TODO Still need to work on the getdata()
 /*
@@ -73,12 +81,12 @@ class AudioClipTest {
              test3.setSample(i, arrayListOfShort.get(i));
              Assertions.assertEquals(arrayListOfShort.get(i), test3.getSample(i));
          }
-
         Assertions.assertArrayEquals(test3.getData(), byteArr);
-
     }
 
  */
 
 
+
+    }
 }

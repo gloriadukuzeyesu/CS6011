@@ -9,16 +9,13 @@ public class Mixer implements AudioComponent {
         inputs = new ArrayList<>();
     }
 
-
-
-
     @Override
     public AudioClip getClip() {
         AudioClip OutPutClip = new AudioClip();
 //        AudioClip clip = new AudioClip();
 
-        for ( int i=0; i< inputs.size(); i++) {
-            AudioClip clip = inputs.get(i).getClip();
+        for (AudioComponent input : inputs) {
+            AudioClip clip = input.getClip();
             for (int j = 0; j < AudioClip.TotalSamples; j++) {
                 OutPutClip.setSample(j, (short) (OutPutClip.getSample(j) + clip.getSample(j)));
             }
