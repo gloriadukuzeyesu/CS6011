@@ -9,23 +9,9 @@ import javax.sound.sampled.LineUnavailableException;
 import java.util.ArrayList;
 
 public class Main {
-    static void testAudioClip() {
-        AudioClip clip = new AudioClip();
-        for (int i = Short.MIN_VALUE, j = 0; i <= Short.MAX_VALUE; i++, j++) {
-            clip.setSample(j, (short) i);
-            if (clip.getSample(j) != i) {
-                System.out.println("not equal");
-            }
-            else
-                System.out.println("Equal");
-        }
-    }
 
     public static  void  main( String [] arg ) throws LineUnavailableException {
-        /*
-        Testing my clip
-         */
-        testAudioClip();
+
         // Get properties from the system about samples rates, etc.
         // AudioSystem is a class from the Java standard library.
         Clip c = AudioSystem.getClip(); // Note, this is different from our AudioClip class.
@@ -34,66 +20,47 @@ public class Main {
         AudioFormat format16 =  new AudioFormat(44100, 16, 1, true, false);
 
         AudioComponent gen = new SineWave(220);
-        AudioClip clip = gen.getClip();
+        AudioClip testClip = gen.getClip();
+        /*TODO uncomment to play the testClip */
+        //c.open(format16, testClip.getData(), 0,testClip.getData().length);
 
         /*  Test to adjust the Volume  */
-           Volume MyVolume = new Volume(1.5);
-           AudioComponent NewSineWave = new SineWave(220);
-           MyVolume.connectInput(NewSineWave);
-           AudioClip clip2 = MyVolume.getClip();
+       Volume MyVolume = new Volume(1.5);
+       AudioComponent NewSineWave = new SineWave(220);
+       MyVolume.connectInput(NewSineWave);
+       AudioClip myVolumeClip = MyVolume.getClip();
+       /*TODO uncomment to play myVolumeClip clip, adjust the volume to test the Volume functionality*/
+       //c.open(format16, myVolumeClip.getData(), 0,myVolumeClip.getData().length);
 
-       /*  test for mixer, use the already created sine wave, gen and newSineWave */
+        /*  test for mixer, use the already created sine wave, gen and newSineWave */
         Mixer myMixer = new Mixer();
         myMixer.connectInput(NewSineWave);
         myMixer.connectInput(gen);
-
         MyVolume.connectInput(myMixer);
         AudioClip mixerOut = MyVolume.getClip();
+        /*TODO uncomment to play the mixerOut clips*/
+        //c.open(format16, mixerOut.getData(), 0,mixerOut.getData().length);
 
-
-//        c.open(format16, mixerOut.getData(), 0,mixerOut.getData().length);
-
-
-        /* test for linearRampAudioComponent :
-        * create a linearRampAudioComponent obj
-        * create a sinewave
-        * connect the sinewave to the vol
-        * connect the linearRam to the adjustedvolumed sinewave
-        * create a clip
-        * connect it to the vol
-        *
-        *  */
+        /* test for linearRampAudioComponent  */
         AudioComponent liner_Ramp = new linearRamp(50, 20000);
-
         VFSineWave vf_SineWave = new VFSineWave();
         vf_SineWave.connectInput(liner_Ramp);
-
         Volume VolumeAdjuster = new Volume(1);
-
         VolumeAdjuster.connectInput(vf_SineWave);
-
         AudioClip linearClip = VolumeAdjuster.getClip();
-
-
-
-
-
-        /* Opens the clip, meaning that it should acquire any required system resources and become operational.*/
-//        c.open(format16, mixerOut.getData(), 0,mixerOut.getData().length);
+        /*TODO uncomment to play the linearClip, adjust different start and stop, creates funny sounds */
         c.open(format16, linearClip.getData(), 0,linearClip.getData().length);
-//        c.open(format16, clip2.getData(), 0,clip2.getData().length);
-
 
         System.out.println("About to play ");
         c.start(); // Plays it.
-        c.loop(1); // Plays it 2 more times if desired, so 6 seconds total
+        c.loop(0); // Plays it 2 more times if desired, so 6 seconds total
+
         while ( c.getFramePosition() < AudioClip.TotalSamples || c.isActive() || c.isRunning() ) {
             // Do nothing while we wait for the note to play.
         }
 
         System.out.println("Done");
         c.close();
-
 
     }
 }
