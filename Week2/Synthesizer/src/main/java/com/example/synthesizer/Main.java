@@ -22,15 +22,15 @@ public class Main {
         AudioComponent gen = new SineWave(220);
         AudioClip testClip = gen.getClip();
         /*TODO uncomment to play the testClip */
-        //c.open(format16, testClip.getData(), 0,testClip.getData().length);
+//        c.open(format16, testClip.getData(), 0,testClip.getData().length);
 
         /*  Test to adjust the Volume  */
-       Volume MyVolume = new Volume(1);
+       Volume MyVolume = new Volume(0.5);
        AudioComponent NewSineWave = new SineWave(220);
        MyVolume.connectInput(NewSineWave);
        AudioClip myVolumeClip = MyVolume.getClip();
        /*TODO uncomment to play myVolumeClip clip, adjust the volume to test the Volume functionality*/
-       //c.open(format16, myVolumeClip.getData(), 0,myVolumeClip.getData().length);
+       c.open(format16, myVolumeClip.getData(), 0,myVolumeClip.getData().length);
 
         /*  test for mixer, use the already created sine wave, gen and newSineWave */
         Mixer myMixer = new Mixer();
@@ -49,11 +49,11 @@ public class Main {
         VolumeAdjuster.connectInput(vf_SineWave);
         AudioClip linearClip = VolumeAdjuster.getClip();
         /*TODO uncomment to play the linearClip, adjust different start and stop, creates funny sounds */
-        c.open(format16, linearClip.getData(), 0,linearClip.getData().length);
+//        c.open(format16, linearClip.getData(), 0,linearClip.getData().length);
 
         System.out.println("About to play ");
         c.start(); // Plays it.
-        c.loop(0); // Plays it 2 more times if desired, so 6 seconds total
+        c.loop(2); // Plays it 2 more times if desired, so 6 seconds total
 
         while ( c.getFramePosition() < AudioClip.TotalSamples || c.isActive() || c.isRunning() ) {
             // Do nothing while we wait for the note to play.

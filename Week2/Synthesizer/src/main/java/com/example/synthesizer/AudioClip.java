@@ -38,8 +38,6 @@ public class AudioClip {
         return Arrays.copyOf(data, data.length);
     }
 
-    // int size = data.length;
-    //        return Arrays.copyOf(data, size);
 
     public int getDataSize () {
         return data.length;
