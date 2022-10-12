@@ -35,12 +35,3 @@ public class Mixer implements AudioComponent {
     }
 }
 
-// adjust the volume and other details I want my mixer to do for each input.
-// It could be change the volume, support synchronization,
-//When one line in a synchronized group is started or stopped,
-// the other lines in the group automatically start or stop simultaneously with the explicitly affected one.
-
-//        inputs.add((AudioComponent) clip);
-
-//        AudioClip original = inputs.getClip();
-// inputs_[i] ( uses getClip())

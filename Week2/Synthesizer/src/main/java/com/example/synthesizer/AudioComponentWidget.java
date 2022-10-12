@@ -74,7 +74,7 @@ public class AudioComponentWidget extends Pane {
 
         centerComponent.getChildren().add(title);
         centerComponent.getChildren().add(slide);
-        
+
         centerComponent.setOnMousePressed(e -> startDrag( e ) );
         centerComponent.setOnMouseDragged(e -> handleDrag ( e ) );
 
@@ -92,13 +92,13 @@ public class AudioComponentWidget extends Pane {
     }
 
     private void endConnection(MouseEvent e, Circle outputCircle) {
-        Circle speaker = SynthesizeApplication.speaker_;
+        Circle speaker = SpeakerWidget.speaker_;
         Bounds speakerBounds = speaker.localToScreen( speaker.getBoundsInLocal() );
         double distance = Math.sqrt( Math.pow ( speakerBounds.getCenterX() - e.getScreenX(), 2.0 ) +
                                         Math.pow( speakerBounds.getCenterY() - e.getScreenY(), 2.0 ) );
         if ( distance < 10 ) {
             //handle actual connection to speaker
-//            SynthesizeApplication.widgets_.add( this );
+//            SynthesizeApplication.widgets_.remove( this );
         }
         else {
             parent_.getChildren().remove( line_);
@@ -131,9 +131,6 @@ public class AudioComponentWidget extends Pane {
         line_.setEndY( e.getSceneY() );
         // add line to the parent so it can be drawn
         parent_.getChildren().add( line_ );
-
-
-
     }
 
     private void handleDrag(MouseEvent e) {
@@ -167,7 +164,6 @@ public class AudioComponentWidget extends Pane {
 
 
     }
-
 
 
     public AudioComponent getAudioComponent() { return audioComponent_;}
