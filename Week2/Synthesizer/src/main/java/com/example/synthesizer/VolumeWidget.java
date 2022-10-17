@@ -10,17 +10,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class VolumeWidget extends AudioComponentWidgetBase {
+public class CreateVolumeWidget extends AudioComponentWidgetBase {
 
     private Slider slider = new Slider(0,2,1);
     private Label title = new Label();
     public static  Circle VolumeConnector_;
 
-    public VolumeWidget (AudioComponent ac, AnchorPane parent, String name, double xlocation, double ylocation) {
-        super(ac, parent, name, xlocation, ylocation);
+    public CreateVolumeWidget(AudioComponent ac, AnchorPane parent, String name) {
+        super(ac, parent, name);
     }
 
-    public void CreateVolumeWidget() {
+    public CreateVolumeWidget() {
         title.setMouseTransparent(true);
         slider.setOnMouseDragged(e-> handleSlider(e));
         title.setText("Volume 1");
