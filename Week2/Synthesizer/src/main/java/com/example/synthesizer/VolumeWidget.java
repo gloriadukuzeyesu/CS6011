@@ -30,19 +30,16 @@ public class VolumeWidget extends AudioComponentWidgetBase {
 
         // Circle for the volume widget
         VBox volumebar = new VBox();
-//        volumebar.setStyle("-fx-background-color: purple");
         VolumeConnector_ = new Circle(30);
         VolumeConnector_.setFill(Color.DARKORCHID);
         volumebar.getChildren().add(VolumeConnector_);
         baseLayout_.getChildren().add(volumebar);
-
     }
 
     public void handleSlider(MouseEvent e) {
         int value = (int) slider.getValue();
         title.setText("Volume " + value + " ");
-        Volume volume = new Volume(value);
-        volume.connectInput(super.audioComponent_);
+        audioComponent_ = new Volume(value);
     }
 
 

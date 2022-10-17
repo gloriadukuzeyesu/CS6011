@@ -19,7 +19,6 @@ public class SineWaveWidget extends AudioComponentWidgetBase {
 
     }
 
-
     public void createSliderAndTitle() {
         title.setMouseTransparent(true);
         title.setText("SineWave");

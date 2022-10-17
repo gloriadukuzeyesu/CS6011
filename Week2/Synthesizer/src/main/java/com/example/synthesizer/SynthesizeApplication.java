@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javax.sound.sampled.*;
 import java.io.IOException;
@@ -16,14 +15,16 @@ public class SynthesizeApplication extends Application {
     //member variables
     public static AnchorPane mainCanvas_;
     public static ArrayList<AudioComponentWidgetBase> widgets_ = new ArrayList<>();
+/*
     public static ArrayList<AudioComponentWidgetBase> VolumeWidgets_ = new ArrayList<AudioComponentWidgetBase>();
+*/
 
 
     @Override
     public void start(Stage stage) throws IOException {
         // Parent
         BorderPane root = new BorderPane();
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 800, 500);
 
         /*********************** right panel for the scene ***********************/
         VBox rightPanel = new VBox();
@@ -52,10 +53,9 @@ public class SynthesizeApplication extends Application {
         mainCanvas_.setStyle("-fx-background-color: antiquewhite");
 
 
-      /*  speaker_ = new Circle(400, 200, 15);
-        speaker_.setFill(Color.BLACK);
-        mainCanvas_.getChildren().add(speaker_);*/
-
+        // create a speaker widget on the mainCanvas
+        SpeakerWidget speakerWidget = new SpeakerWidget();
+        speakerWidget.CreateSpeakerWidget();
 
 
         /*********************** bottom panel***********************/
@@ -81,7 +81,7 @@ public class SynthesizeApplication extends Application {
     private void createVolumeComponent(String volume) {
         System.out.println("Create a volume Component");
         AudioComponent vol = new Volume(2);
-        VolumeWidget volumeWidget = new VolumeWidget(vol,mainCanvas_,"Volume",50,300);
+        VolumeWidget volumeWidget = new VolumeWidget(vol, mainCanvas_, "Volume", 50, 300);
         volumeWidget.CreateVolumeWidget();
         widgets_.add(volumeWidget); // keep tack of all widgets
     }
@@ -89,7 +89,7 @@ public class SynthesizeApplication extends Application {
     private void createSineWaveComponent(String sineWave) {
         System.out.println("Create sineWave Component");
         AudioComponent SineWave = new SineWave(440);
-        SineWaveWidget sine_wave_widget = new SineWaveWidget(SineWave, mainCanvas_, "SineWave", 100,60);
+        SineWaveWidget sine_wave_widget = new SineWaveWidget(SineWave, mainCanvas_, "SineWave", 100, 60);
         sine_wave_widget.createSliderAndTitle();
         System.out.println("added the title");
         widgets_.add(sine_wave_widget); // keep tack of all widgets
@@ -97,32 +97,35 @@ public class SynthesizeApplication extends Application {
 
     private void PlayNetwork() {
         ArrayList<AudioComponentWidgetBase> SpeakerWidgets = SpeakerWidget.SpeakerWidgets_;
-        if (SpeakerWidgets.size() == 0 ) {
+        if (SpeakerWidgets.size() == 0) {
             System.out.println("widget size is equal to 0");
             return;
         }
         try {
             Clip c = AudioSystem.getClip();
-//            AudioListener listener = new AudioListener(c);
             Mixer mixer = new Mixer();
             Volume volume = new Volume(1);
-            for (AudioComponentWidgetBase w : widgets_) {
+            ArrayList<AudioComponentWidgetBase> speakerWidgets = SpeakerWidget.SpeakerWidgets_;
+
+            for (AudioComponentWidgetBase w : speakerWidgets) {
                 AudioComponent ac = w.getAudioComponent();
-                mixer.connectInput(ac);
                 volume.connectInput(ac);
+                mixer.connectInput(volume);
             }
+
             AudioFormat format = new AudioFormat(44100, 16, 1, true, false);
             byte[] data = mixer.getClip().getData();
             c.open(format, data, 0, data.length);
             c.start();
-            c.addLineListener(e -> handleAudioDone(e,c)); // its job is to wait until the event is stopped and then close the clip
+            c.addLineListener(e -> handleAudioDone(e, c)); // its job is to wait until the event is stopped and then close the clip
+
         } catch (LineUnavailableException e) {
             System.out.println("failed to open the clip");
         }
     }
 
     private void handleAudioDone(LineEvent e, Clip c) {
-        if ( e.getType() == LineEvent.Type.STOP ) {
+        if (e.getType() == LineEvent.Type.STOP) {
             System.out.println("Close clip");
             c.close();
         }
@@ -130,12 +133,9 @@ public class SynthesizeApplication extends Application {
 
     public static void main(String[] args) {
 
-
         //        launch();
         Application.launch(SynthesizeApplication.class); // this will run my JavaFx GUI app, basically it will run the start()
     }
-
-
 
 
 }
