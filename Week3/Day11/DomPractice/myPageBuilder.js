@@ -1,6 +1,5 @@
 
 
-
 let h1 = document.createElement('h1');
 h1.textContent = "Empowering women";
 h1.style.textAlign = "center";
@@ -14,8 +13,6 @@ h1.style.fontSize = "3.5rem";
 
 document.body.appendChild(h1);
 document.body.style.backgroundColor = "#2b7a78";
-
-
 
 let parentDiv = document.createElement('div');
 parentDiv.style.padding = "30px";
@@ -77,7 +74,6 @@ image2.style.flex = "50%";
 ChildDiv1_2.appendChild(image2);
 
 
-
 let blockquote1 = document.createElement('blockquote');
 blockquote1.setAttribute( "cite", "https://www.harpersbazaar.com/culture/features/a4056/empowering-female-quotes/");
 blockquote1.textContent = " I can promise you that women working together linked, informed and educated can bring peace and prosperity to this forsaken planet";
@@ -92,11 +88,6 @@ blockquote1.style.color = "#b999be";
 blockquote1.style.borderLeft = "10px";
 blockquote1.style.borderLeftStyle = "Solid";
 blockquote1.style.borderLeftColor = "rgb(204, 204, 204";
-
-
-
-
-
 
 parentDiv.appendChild(blockquote1);
 
@@ -125,9 +116,6 @@ let em2 = document.createElement('em');
 em2.textContent= " Emma Watson";
 blockquote2.appendChild(em2);
 
-
-////
-
 let blockquote3 = document.createElement('blockquote');
 blockquote3.setAttribute ("cite", "https://www.harpersbazaar.com/culture/features/a4056/empowering-female-quotes/" );
 blockquote3.textContent = "There's something so special about a woman who dominates in a man's world. It takes a certain grace, strength, intelligence, fearlessness, and the nerve to never take no for an answer ";
@@ -148,13 +136,6 @@ parentDiv.appendChild(blockquote3);
 let em3 = document.createElement('em');
 em3.textContent= "Rihanna";
 blockquote3.appendChild(em3);
-
-
-
-
-// 
-
-
 
 let divForLink = document.createElement('div');
 parentDiv.appendChild(divForLink);
