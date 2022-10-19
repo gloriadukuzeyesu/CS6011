@@ -50,19 +50,36 @@ let button1 = document.createElement("button");
 button1.textContent="Click here to toggle background color";
 button1.style.padding = "10px";
 button1.style.margin = "20px";
-button1.style.backgroundColor = "lightblue";
+button1.style.backgroundColor = "green";
 button1.style.fontSize = "20px";
-button1.addEventListener ("click", animateBackground);
+
+let intervalTime;
+let numClicked = 0;
+let count = 0;
+button1.addEventListener ("click", function () {
+    intervalTime = window.setInterval(animateBackground,1000);
+    numClicked++;
+    console.log(numClicked);
+    }
+);
+
 document.body.appendChild(button1);
 
-let count = 0;
-function animateBackground () {
+// let animation;
+function animateBackground(){
+    if(numClicked == 2){
+        clearInterval(intervalTime);
+        console.log("numClicked reset");
+        numClicked == -1;
+    }else{
     let doc = document.getElementById ("backgroundID");
     let color = ["blue", "yellow", "pink", "brown", "red"];
     doc.style.backgroundColor = color[count];
     count++;
-    if ( count > color.length){
-        count = 0;
+        if ( count > color.length){
+            count = 0;
+        }
     }
-    window.setInterval(animateBackground,1000);
 }
+
+
