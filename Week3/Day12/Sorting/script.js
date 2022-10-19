@@ -46,8 +46,7 @@ let array4 = [ "mouse", "CATS","dogS"];
 selectionSort( array4 );
 console.log (array4);
 
-// add a comparator 
-
+// add a comparator for people 
 function compareTo(p1, p2){
 
     if ( p1.lastName < p2.lastName ){
@@ -83,7 +82,6 @@ function selectionSortWithCompare( array ) {
         array [i] = array[minIndex];
         array[ minIndex ] = temp;
     }
-
 }
 
 let person1 = {firstName: "Gloria",lastName:"Wells"};
@@ -92,7 +90,6 @@ let person4 = { firstName: "Zackarie", lastName: "Angeliqua"};
 let person3 = { firstName: "Christian", lastName:"Green"};
 let person5 = { firstName: "Christian", lastName:"Adam"};
 
-
 let people = [person1, person4,person2,person3,person5];
 
 selectionSortWithCompare(people);
@@ -100,57 +97,51 @@ console.log(people);
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-//my notes 
-//  function that sort straight // selection sort 
-function sortingArray ( array ) {
-    for ( let i = 0; i< array.length; i++ ) {
-        let minVal = array[i];
-        let minIndex = i;
-        for ( let j = i+1; j < array.length; j++ ) {
-            if ( array[j] < minVal ) {
-                minVal = array[j];
-                minIndex = j;
+function compareToWithFirstName(p1, p2){
+    if ( p1.firstName < p2.firstName ){
+        return true;
+    } else if ( p1.firstName == p2.firstName ){
+            if ( p1.lastName < p2.lastName){
+                return true;
             }
+    }else {
+        return false;
+    }   
+}
+
+function findMinLocationCompWithFirstName( array, iteration){
+    let smallestIndex = iteration;
+    for ( let i = iteration + 1; i < array.length; i ++) {
+
+        if ( compareToWithFirstName ( array[i], array[smallestIndex ]) ) 
+        {
+            smallestIndex = i;
         }
-        //do the swapping 
-        let temp = array[i];
-        array[i] = minVal;
-        array[minIndex] = temp;
+    }
+    return smallestIndex;
+}
+
+
+function selectionSortWithCompareWithFirstName( array ) {
+    for ( let i = 0; i < array.length; i ++ ) {
+        let minIndex = findMinLocationCompWithFirstName( array, i);
+        // do the swap
+        let temp = array [i];
+        array [i] = array[minIndex];
+        array[ minIndex ] = temp;
     }
 }
 
-let myarr2 = [-9,4,8,90,3,8,-19];
-sortingArray( myarr2 );
-console.log( myarr2);
 
-let array10 = ["mouse", "cats", "dogs"]; 
-sortingArray( array10 );
-console.log( array10);
-
-*/
+let personA = {firstName: "Gloria",lastName:"Willow"};
+let personB = { firstName: "Angel", lastName: "Brooks"};
+let personC = { firstName: "Zack", lastName: "Angela"};
+let personD = { firstName: "Christian", lastName:"Green"};
+let personE = { firstName: "Christian", lastName:"Gandy"};
 
 
+let persons = [personA,personB,personE,personC,personD];
 
-
-
-
-
-
+console.log(persons);
+selectionSortWithCompareWithFirstName(persons); // sorting 
+console.log(persons);
