@@ -1,15 +1,34 @@
 "use strict";
 
+
+function compare (a,b){
+    if (a<b)
+    return true;
+}
+
 // find the smallestIndex 
+// function findMinLocation( array, iteration) {
+//     let smallestIndex = iteration;
+//     for ( let i = iteration + 1; i < array.length; i ++) {
+//         if ( array[i] < array[smallestIndex ] ) {
+//             smallestIndex = i;
+//         }
+//     }
+//     return smallestIndex;
+// }
+
 function findMinLocation( array, iteration) {
     let smallestIndex = iteration;
     for ( let i = iteration + 1; i < array.length; i ++) {
-        if ( array[i] < array[smallestIndex ] ) {
+        if ( compare ( array[i], array[smallestIndex ]) ) 
+        {
             smallestIndex = i;
         }
+        
     }
     return smallestIndex;
 }
+
 
 // fx will take an array and sort it 
 function selectionSort( array ) {
@@ -27,21 +46,31 @@ console.log ("testing purposes");
 
 // Integers 
 
+console.log("sort integers");
 // test if my function work
 let myarr = [-9,4,8,90,3,8,-19];
 selectionSort( myarr );
 console.log (myarr);
 
+console.log("sort floats");
 // floats and integers 
-let array2 = [-9.9,4.6,8.5,90.1,3.5,8.66,-19.6];
+let array2 = [-9.9,4.6,8.5,90.1,3.7,8.66,-19.6];
 selectionSort( array2 );
 console.log (array2);
 
+console.log("sort strings");
+let arrayString = ["tomatoes", "apples", "oranges", "banana"];
+selectionSort(arrayString);
+console.log(arrayString);
+
+
+console.log("sort floats and strings");
 // floats and integers and strings 
 let array3 = ["cats",4.6,8.5,"mouse", "dogs", 5]; // the fx isn't properly sorting with strings 
 selectionSort( array3 );
-console.log (" Floats and integers and strings:  " + array3); 
+console.log ( array3 ); 
 
+console.log("sort strings with capital and small letter");
 let array4 = [ "mouse", "CATS","dogS"]; 
 selectionSort( array4 );
 console.log (array4);
@@ -87,8 +116,8 @@ function selectionSortWithCompare( array ) {
 let person1 = {firstName: "Gloria",lastName:"Wells"};
 let person2 = { firstName: "Angel", lastName: "Brooks"};
 let person4 = { firstName: "Zackarie", lastName: "Angeliqua"};
-let person3 = { firstName: "Christian", lastName:"Green"};
-let person5 = { firstName: "Christian", lastName:"Adam"};
+let person3 = { firstName: "Nicole", lastName:"Green"};
+let person5 = { firstName: "Christian", lastName:"Green"};
 
 let people = [person1, person4,person2,person3,person5];
 
