@@ -1,0 +1,30 @@
+body{
+    background-color: lightcoral;
+}
+h1{
+    font-size: 30px;
+    text-align: center;
+}
+
+textarea {
+    resize: none;
+    white-space: nowrap;
+    
+}
+li{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+#ulID{
+    text-align: center;
+    display: inline-block;
+}
+.Column{
+margin: auto;
+width: 60%;
+border: 10px solid #292925;
+padding: 10px;
+}
