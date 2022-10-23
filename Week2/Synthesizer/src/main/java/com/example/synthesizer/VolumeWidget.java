@@ -1,26 +1,36 @@
 package com.example.synthesizer;
 
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Label;
 
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class CreateVolumeWidget extends AudioComponentWidgetBase {
+public class VolumeWidget extends AudioComponentWidgetBase {
 
     private Slider slider = new Slider(0,2,1);
     private Label title = new Label();
     public static  Circle VolumeConnector_;
+    public static Circle VolumeOutput_;
+    public static double VOLUME_RADIUS_ = 20;
 
-    public CreateVolumeWidget(AudioComponent ac, AnchorPane parent, String name) {
+
+    private String ComponentName_ = "Volume";
+
+
+    public VolumeWidget(AudioComponent ac, AnchorPane parent, String name) {
         super(ac, parent, name);
     }
 
-    public CreateVolumeWidget() {
+
+    public void CreateVolumeWidget() {
         title.setMouseTransparent(true);
         slider.setOnMouseDragged(e-> handleSlider(e));
         title.setText("Volume 1");
@@ -30,18 +40,47 @@ public class CreateVolumeWidget extends AudioComponentWidgetBase {
 
         // Circle for the volume widget
         VBox volumebar = new VBox();
-        VolumeConnector_ = new Circle(30);
+        volumebar.setAlignment(Pos.CENTER);
+
+        VolumeConnector_ = new Circle(VOLUME_RADIUS_);
         VolumeConnector_.setFill(Color.DARKORCHID);
+        VolumeConnector_.setOnMousePressed(e -> startConnection(e, VolumeConnector_));
+        VolumeConnector_.setOnMouseDragged(e -> moveConnection(e, VolumeConnector_));
+        VolumeConnector_.setOnMouseReleased(e ->endConnection(e, VolumeConnector_));
+
         volumebar.getChildren().add(VolumeConnector_);
-        baseLayout_.getChildren().add(volumebar);
+        rightRightSide_.getChildren().add(volumebar);
+
+        HBox VolumeToSpeaker = new HBox();
+        VolumeToSpeaker.setAlignment(Pos.CENTER);
+        VolumeOutput_ = new Circle(10, Color.BROWN);
+        VolumeToSpeaker.getChildren().add(VolumeOutput_);
+        centerComponent_.getChildren().add(VolumeToSpeaker);
     }
 
     public void handleSlider(MouseEvent e) {
-        int value = (int) slider.getValue();
-        title.setText("Volume " + value + " ");
-        audioComponent_ = new Volume(value);
+        double value = (double) slider.getValue();
+        double roundedValue = Math.round(value * 100.0) /100.0;
+        title.setText("Volume " + roundedValue + " ");
+        audioComponent_ = new Volume(roundedValue);
     }
 
+    public void handleDrag(MouseEvent e) {
+        double mouseDelX = e.getSceneX() - mouseStartDragX_;
+        double mouseDelY = e.getSceneY() - mouseStartDragY_;
+        this.relocate(widgetStartDragX_ + mouseDelX, widgetStartDragY_ + mouseDelY);
 
+        Bounds parentBounds = parent_.getBoundsInParent();
+        Bounds bounds = SpeakerWidget.speaker_.localToScene(SpeakerWidget.speaker_.getBoundsInLocal());
+
+        line_.setStartX(bounds.getCenterX() - parentBounds.getMinX());
+        line_.setStartY(bounds.getCenterY() - parentBounds.getMinY());
+        System.out.println("connected");
+
+
+    }
+    public String getComponentName(){
+        return ComponentName_;
+    }
 
 }

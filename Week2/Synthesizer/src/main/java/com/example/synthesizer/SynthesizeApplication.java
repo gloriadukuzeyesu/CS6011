@@ -15,9 +15,12 @@ public class SynthesizeApplication extends Application {
     //member variables
     public static AnchorPane mainCanvas_;
     public static ArrayList<AudioComponentWidgetBase> widgets_ = new ArrayList<>();
-/*
-    public static ArrayList<AudioComponentWidgetBase> VolumeWidgets_ = new ArrayList<AudioComponentWidgetBase>();
-*/
+    private double layoutX_ = 20;
+    private double layoutY_ = 48;
+
+
+    ArrayList<AudioComponentWidgetBase> SpeakerWidgets = SpeakerWidget.SpeakerWidgets_;
+
 
 
     @Override
@@ -81,22 +84,38 @@ public class SynthesizeApplication extends Application {
     private void createVolumeComponent(String volume) {
         System.out.println("Create a volume Component");
         AudioComponent vol = new Volume(2);
-        VolumeWidget volumeWidget = new VolumeWidget(vol, mainCanvas_, "Volume", 50, 300);
-        volumeWidget.CreateVolumeWidget();
-        widgets_.add(volumeWidget); // keep tack of all widgets
+        VolumeWidget vW = new VolumeWidget(vol, mainCanvas_, "Volume");
+        vW.CreateVolumeWidget();
+        widgets_.add(vW); // keep tack of all widgets
+        vW.setLayoutX(10);
+        vW.setLayoutY(400);
     }
 
     private void createSineWaveComponent(String sineWave) {
-        System.out.println("Create sineWave Component");
         AudioComponent SineWave = new SineWave(440);
-        SineWaveWidget sine_wave_widget = new SineWaveWidget(SineWave, mainCanvas_, "SineWave", 100, 60);
-        sine_wave_widget.createSliderAndTitle();
-        System.out.println("added the title");
-        widgets_.add(sine_wave_widget); // keep tack of all widgets
+        SineWaveWidget sineWidget = new SineWaveWidget(SineWave, mainCanvas_, "SineWave");
+        sineWidget.CreateSineWaveWidget();
+        widgets_.add(sineWidget); // keep tack of all widgets
+        sineWidget.setLayoutX(layoutX_);
+        sineWidget.setLayoutY(layoutY_);
+        // avoid the widgets from being overlaid
+//        if (layoutX_ < 20 && layoutY_ < 400) {
+//            layoutX_ += 100;
+//            System.out.println(" layoutX_ is "+ layoutX_);
+//        }
+//        else if (layoutY_ < 200) {
+//            layoutX_ = 20;
+//            layoutY_ += 200;
+//            System.out.println( " layoutY_ is "+ layoutY_ + "and layoutX_ is " + layoutX_);
+//
+//        }
+//        else {
+//            layoutX_ -= 600;
+//            layoutY_ -= 180;
+//        }
     }
 
     private void PlayNetwork() {
-        ArrayList<AudioComponentWidgetBase> SpeakerWidgets = SpeakerWidget.SpeakerWidgets_;
         if (SpeakerWidgets.size() == 0) {
             System.out.println("widget size is equal to 0");
             return;
@@ -104,17 +123,22 @@ public class SynthesizeApplication extends Application {
         try {
             Clip c = AudioSystem.getClip();
             Mixer mixer = new Mixer();
-            Volume volume = new Volume(1);
             ArrayList<AudioComponentWidgetBase> speakerWidgets = SpeakerWidget.SpeakerWidgets_;
 
             for (AudioComponentWidgetBase w : speakerWidgets) {
                 AudioComponent ac = w.getAudioComponent();
-                volume.connectInput(ac);
-                mixer.connectInput(volume);
+                mixer.connectInput(ac);
+                /*if ( ac.hasInput() ){
+                    System.out.println("Print Volume ");
+                }
+                else{
+                    mixer.connectInput(ac);
+                }*/
             }
 
             AudioFormat format = new AudioFormat(44100, 16, 1, true, false);
             byte[] data = mixer.getClip().getData();
+
             c.open(format, data, 0, data.length);
             c.start();
             c.addLineListener(e -> handleAudioDone(e, c)); // its job is to wait until the event is stopped and then close the clip
@@ -132,8 +156,7 @@ public class SynthesizeApplication extends Application {
     }
 
     public static void main(String[] args) {
-
-        //        launch();
+//                launch();
         Application.launch(SynthesizeApplication.class); // this will run my JavaFx GUI app, basically it will run the start()
     }
 

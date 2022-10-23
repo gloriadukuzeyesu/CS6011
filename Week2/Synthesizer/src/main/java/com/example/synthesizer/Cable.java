@@ -5,17 +5,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-
 import java.util.ArrayList;
 
-public class Cable{
+import static com.example.synthesizer.SpeakerWidget.SPEAKER_RADIUS;
+
+
+public class Cable {
     ArrayList<AudioComponent> audioComponent_;
-
-    // field
-    protected Line line_;
-    protected Line LineBetweenSineVolume_;
-    protected AnchorPane parent_;
-
+    protected AnchorPane parent = AudioComponentWidgetBase.parent_;
+//    protected Line line = AudioComponentWidgetBase.line_;
+    protected AudioComponentWidgetBase audioComponentWidgetBase = new AudioComponentWidgetBase();
 
     Cable() {}
 
@@ -25,50 +24,44 @@ public class Cable{
     }
 
     // fx to draw a line between inputs to show connection visually
-
-
-    private void moveConnectionBetweenVolumeCircles(MouseEvent e, Circle volumeCircle_) {
-        Bounds parentBounds = parent_.getBoundsInParent();
-        LineBetweenSineVolume_.setEndX(e.getSceneX() - parentBounds.getMinX());
-        LineBetweenSineVolume_.setEndY(e.getSceneY() - parentBounds.getMinY());
-    }
-
-    private void startBetweenVolumeCircles(MouseEvent e, Circle volumeCircle_) {
+  /*  public void startConnection(MouseEvent e, Circle outputCircle) {
         // if a line exists (if there is a line connected to someone else)
-        if (LineBetweenSineVolume_ != null) {
+        if (line != null) {
             // remove that line so that we can create a new connection
-            parent_.getChildren().remove(LineBetweenSineVolume_);
+            parent.getChildren().remove(line);
             System.out.println("remove the line");
         }
-
-        Bounds parentBounds = parent_.getBoundsInParent();
-        Bounds bounds = volumeCircle_.localToScene(volumeCircle_.getBoundsInLocal());
-        LineBetweenSineVolume_ = new Line();
-        LineBetweenSineVolume_.setStrokeWidth(1);
-        LineBetweenSineVolume_.setStartX(bounds.getCenterX() - parentBounds.getMinX());
-        LineBetweenSineVolume_.setStartY(bounds.getCenterY() - parentBounds.getMinY());
-        LineBetweenSineVolume_.setEndX(e.getSceneX());
-        LineBetweenSineVolume_.setEndY(e.getSceneY());
+        Bounds parentBounds = parent.getBoundsInParent();
+        Bounds bounds = outputCircle.localToScene(outputCircle.getBoundsInLocal());
+        line = new Line();
+        line.setStrokeWidth(2);
+        line.setStartX(bounds.getCenterX() - parentBounds.getMinX());
+        line.setStartY(bounds.getCenterY() - parentBounds.getMinY());
+        line.setEndX(e.getSceneX());
+        line.setEndY(e.getSceneY());
         // add line to the parent so it can be drawn
-        parent_.getChildren().add(LineBetweenSineVolume_);
-
+        parent.getChildren().add(line);
     }
 
-    private void endConnectionbetweenVolumeCircles(MouseEvent e, Circle volumeCircle) {
-        Circle volumeConnector = VolumeWidget.VolumeConnector_;
-        Bounds VolumeBounds = volumeConnector.localToScreen(volumeConnector.getBoundsInLocal());
-        double distance = Math.sqrt(Math.pow(VolumeBounds.getCenterX() - e.getScreenX(), 2.0) +
-                Math.pow(VolumeBounds.getCenterY() - e.getScreenY(), 2.0));
+    public  void moveConnection(MouseEvent e, Circle outputCircle) {
+        Bounds parentBounds = parent.getBoundsInParent();
+        line.setEndX(e.getSceneX() - parentBounds.getMinX());
+        line.setEndY(e.getSceneY() - parentBounds.getMinY());
+    }
 
-        if (distance < 10) {
-            //handle actual connection to speaker
-//            SynthesizeApplication.widgets_.remove( this );
+    public void endConnection(MouseEvent e, Circle outputCircle) {
+        Circle speaker = SpeakerWidget.speaker_;
+        Bounds SpeakerBounds = speaker.localToScreen(speaker.getBoundsInLocal());
+        double distance = Math.sqrt(Math.pow(SpeakerBounds.getCenterX() - e.getScreenX(), 2.0) +
+                Math.pow(SpeakerBounds.getCenterY() - e.getScreenY(), 2.0));
+        System.out.println("DEBUG: on endconnection, distance: " + distance);
+        if (distance < SPEAKER_RADIUS) { // if there is a connection add the widget to speaker
+            SpeakerWidget.SpeakerWidgets_.add (audioComponentWidgetBase);
         } else {
-            parent_.getChildren().remove(line_);
-            line_ = null;
+            parent.getChildren().remove(line);
+            line = null;
+            SpeakerWidget.SpeakerWidgets_.remove(audioComponentWidgetBase);
         }
-//        SynthesizeApplication.VolumeWidgets_.add(this);
-    }
-
+    }*/
 
 }

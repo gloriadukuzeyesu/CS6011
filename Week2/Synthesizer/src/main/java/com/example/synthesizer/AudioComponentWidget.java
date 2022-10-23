@@ -21,8 +21,7 @@ public class AudioComponentWidget extends Pane {
     private AnchorPane parent_;
     private String name_;
     private HBox baseLayout;
-    private Line line_;
-
+    private  Line line_;
     private double mouseStartDragX_, mouseStartDragY_, widgetStartDragX_, widgetStartDragY_;
 
     AudioComponentWidget () {
@@ -160,8 +159,6 @@ public class AudioComponentWidget extends Pane {
         if( line_ != null ) {
             parent_.getChildren().remove( line_ );
         }
-
-
 
     }
 
