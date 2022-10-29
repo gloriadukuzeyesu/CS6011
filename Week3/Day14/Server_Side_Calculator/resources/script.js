@@ -24,6 +24,7 @@ let Web_Socket_Open = false;
 
 function handleConnectCallBack (event) {
     Web_Socket_Open = true;
+    console.log("it is working");
 }
 
 function handleMessageCallBack (event) {
@@ -70,6 +71,7 @@ function handleKeypressedCB ( event ) {
         /**************** create a webscocket *****************/
         if (Web_Socket_Open ) {
             ws.send( x + " " + y); // send the message to the server
+            console.log(" ws is open");
         } 
         else{
             WSresultTA.value = "Web socket is not open...";   
