@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class SineWaveWidget extends AudioComponentWidgetBase {
+
     Slider slider = new Slider(220, 880, 440);
     Label title = new Label();
     public static  Circle OutputCircle_;

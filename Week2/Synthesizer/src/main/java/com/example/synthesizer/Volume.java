@@ -33,7 +33,7 @@ public class Volume implements AudioComponent{
 
     @Override
     public boolean hasInput() {
-        return false;
+        return true;
     }
 
 

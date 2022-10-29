@@ -82,13 +82,13 @@ public class SynthesizeApplication extends Application {
     }
 
     private void createVolumeComponent(String volume) {
-        System.out.println("Create a volume Component");
-        AudioComponent vol = new Volume(2);
+        AudioComponent vol = new Volume(1);
         VolumeWidget vW = new VolumeWidget(vol, mainCanvas_, "Volume");
         vW.CreateVolumeWidget();
-        widgets_.add(vW); // keep tack of all widgets
         vW.setLayoutX(10);
         vW.setLayoutY(400);
+        widgets_.add(vW);
+        System.out.println("Volume widget created");
     }
 
     private void createSineWaveComponent(String sineWave) {
@@ -98,6 +98,8 @@ public class SynthesizeApplication extends Application {
         widgets_.add(sineWidget); // keep tack of all widgets
         sineWidget.setLayoutX(layoutX_);
         sineWidget.setLayoutY(layoutY_);
+        System.out.println("SineWave widget created");
+
         // avoid the widgets from being overlaid
 //        if (layoutX_ < 20 && layoutY_ < 400) {
 //            layoutX_ += 100;
@@ -123,22 +125,16 @@ public class SynthesizeApplication extends Application {
         try {
             Clip c = AudioSystem.getClip();
             Mixer mixer = new Mixer();
-            ArrayList<AudioComponentWidgetBase> speakerWidgets = SpeakerWidget.SpeakerWidgets_;
 
-            for (AudioComponentWidgetBase w : speakerWidgets) {
-                AudioComponent ac = w.getAudioComponent();
-                mixer.connectInput(ac);
-                /*if ( ac.hasInput() ){
-                    System.out.println("Print Volume ");
-                }
-                else{
-                    mixer.connectInput(ac);
-                }*/
+            for (AudioComponentWidgetBase speakerWidget : SpeakerWidget.SpeakerWidgets_) {
+                mixer.connectInput(speakerWidget.getAudioComponent());
             }
+
+            System.out.println("widgets_ is " + widgets_.size());
+            System.out.println("Speakerwidgets_ is " + SpeakerWidgets.size());
 
             AudioFormat format = new AudioFormat(44100, 16, 1, true, false);
             byte[] data = mixer.getClip().getData();
-
             c.open(format, data, 0, data.length);
             c.start();
             c.addLineListener(e -> handleAudioDone(e, c)); // its job is to wait until the event is stopped and then close the clip

@@ -23,10 +23,9 @@ public class Mixer implements AudioComponent {
         return OutPutClip; // TODO call the clamping as here
     }
 
-
     @Override
     public boolean hasInput() {
-        return false;
+        return true;
     }
 
     @Override

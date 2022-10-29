@@ -13,11 +13,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import static com.example.synthesizer.SpeakerWidget.SPEAKER_RADIUS;
+
 public class VolumeWidget extends AudioComponentWidgetBase {
 
     private Slider slider = new Slider(0,2,1);
     private Label title = new Label();
-    public static  Circle VolumeConnector_;
+    private  Circle VolumeConnector_;
     public static Circle VolumeOutput_;
     public static double VOLUME_RADIUS_ = 20;
 
@@ -58,13 +60,34 @@ public class VolumeWidget extends AudioComponentWidgetBase {
         centerComponent_.getChildren().add(VolumeToSpeaker);
     }
 
+
+/*
+    public void endConnection(MouseEvent e, Circle outputCircle) {
+        Circle speaker = SpeakerWidget.speaker_;
+        Bounds SpeakerBounds = speaker.localToScreen(speaker.getBoundsInLocal());
+        double distance = Math.sqrt(Math.pow(SpeakerBounds.getCenterX() - e.getScreenX(), 2.0) +
+                Math.pow(SpeakerBounds.getCenterY() - e.getScreenY(), 2.0));
+
+        if (distance < SPEAKER_RADIUS) {
+            SpeakerWidget.SpeakerWidgets_.add(this);
+//            SynthesizeApplication.widgets_.add(this);
+            System.out.println("VolumeWidget connected to Speaker");
+        } else {
+            parent_.getChildren().remove(line_);
+            line_ = null;
+            SpeakerWidget.SpeakerWidgets_.remove(this);
+            SynthesizeApplication.widgets_.remove(this);
+        }
+        System.out.println("Cut connection between volume and speaker");
+    }
+*/
     public void handleSlider(MouseEvent e) {
         double value = (double) slider.getValue();
         double roundedValue = Math.round(value * 100.0) /100.0;
         title.setText("Volume " + roundedValue + " ");
-        audioComponent_ = new Volume(roundedValue);
+        Volume adjustVolume = new Volume(roundedValue);
+        adjustVolume.connectInput(audioComponent_);
     }
-
     public void handleDrag(MouseEvent e) {
         double mouseDelX = e.getSceneX() - mouseStartDragX_;
         double mouseDelY = e.getSceneY() - mouseStartDragY_;
@@ -79,6 +102,7 @@ public class VolumeWidget extends AudioComponentWidgetBase {
 
 
     }
+    @Override
     public String getComponentName(){
         return ComponentName_;
     }

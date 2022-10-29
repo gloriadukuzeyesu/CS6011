@@ -2,6 +2,7 @@ package com.example.synthesizer;
 
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -22,6 +23,8 @@ public class AudioComponentWidgetBase extends Pane implements BaseWidgetAndSpeak
     protected double mouseStartDragX_, mouseStartDragY_, widgetStartDragX_, widgetStartDragY_;
     protected Line line_ = new Line();
     protected VBox rightRightSide_;
+    private  String ComponentName_ = "AudioComponentWidget";
+    private Point2D lineEnd_;
 
 
     AudioComponentWidgetBase  () {}
@@ -79,7 +82,6 @@ public class AudioComponentWidgetBase extends Pane implements BaseWidgetAndSpeak
         widgetStartDragX_ = this.getLayoutX();
         widgetStartDragY_ = this.getLayoutY();
     }
-
     public void closeWidget() {
         parent_.getChildren().remove(this);
         System.out.println("widget has been removed");
@@ -87,7 +89,7 @@ public class AudioComponentWidgetBase extends Pane implements BaseWidgetAndSpeak
             parent_.getChildren().remove(line_);
             System.out.println("remove the line"); // remove that line so that we can create a new connection
         }
-//        SynthesizeApplication.widgets_.remove(this); // spaghetti code.
+        SynthesizeApplication.widgets_.remove(this); // spaghetti code.
         SpeakerWidget.SpeakerWidgets_.remove(this);
     }
 
@@ -96,6 +98,7 @@ public class AudioComponentWidgetBase extends Pane implements BaseWidgetAndSpeak
             // remove that line so that we can create a new connection
             parent_.getChildren().remove(line_);
             SpeakerWidget.SpeakerWidgets_.remove (this);
+            SynthesizeApplication.widgets_.remove(this);
             System.out.println("remove the line");
         }
         Bounds parentBounds = parent_.getBoundsInParent();
@@ -116,35 +119,41 @@ public class AudioComponentWidgetBase extends Pane implements BaseWidgetAndSpeak
         System.out.println("move connection");
     }
     public void endConnection(MouseEvent e, Circle outputCircle) {
-/*
+
         Circle volumeReceiver = VolumeWidget.VolumeOutput_;
         Bounds Volume_Receiver_Bounds = volumeReceiver.localToScreen(volumeReceiver.getBoundsInLocal());
-        double distance1 = Math.sqrt(Math.pow(Volume_Receiver_Bounds.getCenterX() - e.getScreenX(), 2.0) +
-                Math.pow(Volume_Receiver_Bounds.getCenterY() - e.getScreenY(), 2.0));*/
+        double distanceToVolume = Math.sqrt(Math.pow(Volume_Receiver_Bounds.getCenterX() - e.getScreenX(), 2.0) +
+                Math.pow(Volume_Receiver_Bounds.getCenterY() - e.getScreenY(), 2.0));
 
         Circle speaker = SpeakerWidget.speaker_;
         Bounds SpeakerBounds = speaker.localToScreen(speaker.getBoundsInLocal());
-        double distance = Math.sqrt(Math.pow(SpeakerBounds.getCenterX() - e.getScreenX(), 2.0) +
+        double distanceToSpeaker = Math.sqrt(Math.pow(SpeakerBounds.getCenterX() - e.getScreenX(), 2.0) +
                 Math.pow(SpeakerBounds.getCenterY() - e.getScreenY(), 2.0));
-        if (distance < SPEAKER_RADIUS) {
-            SpeakerWidget.SpeakerWidgets_.add(this);
-            SynthesizeApplication.widgets_.add(this);
 
-        } /*else if(distance1 < VOLUME_RADIUS_) {
-                SpeakerWidget.SpeakerWidgets_.add(this);
-                SynthesizeApplication.widgets_.add(this);
-            }*/
-        else {
+        if (distanceToSpeaker < SPEAKER_RADIUS) {
+            SpeakerWidget.SpeakerWidgets_.add(this);
+//            SynthesizeApplication.widgets_.add(this);
+            System.out.println("sineWave widget connected to Speaker");
+        } else if(distanceToVolume < VOLUME_RADIUS_) {
+//            SynthesizeApplication.widgets_.add(this);
+//            SpeakerWidget.SpeakerWidgets_.add(this);
+            System.out.println("SinewaveWidget connected to VolumeWidget");
+        } else {
             parent_.getChildren().remove(line_);
             line_ = null;
-//                SpeakerWidget.SpeakerWidgets_.remove(this);
-            SynthesizeApplication.widgets_.add(this);
+            SpeakerWidget.SpeakerWidgets_.remove(this);
+            SynthesizeApplication.widgets_.remove(this);
         }
+//        SynthesizeApplication.widgets_.add(this);
         System.out.println("stop connection");
     }
 
     public AudioComponent getAudioComponent() {
         return audioComponent_;
+    }
+
+    public String getComponentName(){
+        return ComponentName_;
     }
 
 

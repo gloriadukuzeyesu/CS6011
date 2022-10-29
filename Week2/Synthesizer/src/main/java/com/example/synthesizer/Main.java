@@ -1,12 +1,8 @@
 package com.example.synthesizer;
-
-import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
-
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
-import java.util.ArrayList;
 
 public class Main {
 
