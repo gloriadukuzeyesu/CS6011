@@ -6,7 +6,7 @@ let UserName = document.getElementById("User_ID");
 let MessageToServer = document.getElementById("Message_ID");
 
 let room = RoomName.value;
-let user = UserName.value;
+let user_ = UserName.value;
 
 
 RoomName.addEventListener("keypress", handleKeyPressedCB );
@@ -17,6 +17,7 @@ MessageToServer.addEventListener("keypress",handleKeyPressedMessagingServer);
 
 let webSocketIsOpen = false;
 let ws = new WebSocket("ws://localhost:8080");
+
 ws.onopen = handleOpen;
 // ws.send("Sending msg to the server");
 ws.onmessage = handleMessage;
@@ -40,7 +41,7 @@ function handleKeyPressedCB (event) {
         if (webSocketIsOpen){
             ws.send(`join ${UserName.value} ${RoomName.value}`);
 
-            // console.log(UserName.value + " " + RoomName.value);
+            console.log(UserName.value + " " + RoomName.value);
             }else{ 
                 alert("websocket is not open.");
         }
@@ -71,7 +72,7 @@ function handleMessage ( event ) {
     if( type == "join") {
         
         let messageList1 = document.createElement('li');
-        let messageItemText1 = document.createTextNode (UserName.value  + " has joined the " + room );
+        let messageItemText1 = document.createTextNode (user  + " has joined the " + room );
         messageList1.appendChild(messageItemText1);
         dashboard.appendChild(messageList1);
     } else if ( type == "message") {
@@ -83,7 +84,7 @@ function handleMessage ( event ) {
     } else if ( type == "leave") {
         //dispaly user left the room 
         let messageList3 = document.createElement('li');
-        let messageItemText3 = document.createTextNode (user +" has left the " + room);
+        let messageItemText3 = document.createTextNode (user + " has left the " + room);
         messageList3.appendChild(messageItemText3);
         dashboard.appendChild(messageList3);
     }
