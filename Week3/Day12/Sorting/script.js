@@ -17,7 +17,7 @@ function compare (a,b){
 //     return smallestIndex;
 // }
 
-function findMinLocation( array, iteration) {
+function findMinLocation( array, iteration, compare) {
     let smallestIndex = iteration;
     for ( let i = iteration + 1; i < array.length; i ++) {
         if ( compare ( array[i], array[smallestIndex ]) ) 
@@ -33,7 +33,7 @@ function findMinLocation( array, iteration) {
 // fx will take an array and sort it 
 function selectionSort( array ) {
     for ( let i = 0; i < array.length; i ++ ) {
-        let minIndex = findMinLocation( array, i );
+        let minIndex = findMinLocation( array, i, compare );
         // do the swap
         let temp = array [i];
         array [i] = array[minIndex];
