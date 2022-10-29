@@ -19,9 +19,9 @@ for( let i = 1; i <= 10; i++  ) {
     for (let j=1; j <= 10; j++ ) {
         let tableData1 = document.createElement("td");
         tableData1.addEventListener("click", highlightCell);
-
         tableData1.setAttribute("class", "cell_Class");
         let dataContent = document.createTextNode(i*j);
+        console.log(i*j);
         tableData1.appendChild(dataContent);
         row1.appendChild( tableData1 );
     }
