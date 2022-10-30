@@ -5,17 +5,11 @@ let RoomName = document.getElementById("RM_ID");
 let UserName = document.getElementById("User_ID");
 let MessageToServer = document.getElementById("Message_ID");
 
-let room = RoomName.value;
-let user = UserName.value;
-
 RoomName.addEventListener("keypress", handleKeyPressedCB );
 // UserName.addEventListener("keypress", handleKeyPressedCB );
 MessageToServer.addEventListener("keypress",handleKeyPressedMessagingServer);
 
-
 let webSocketIsOpen = false;
-
-// ws.onclose = handleClose;
 
 function handleKeyPressedCB (event) {
     console.log("key presseed");
@@ -51,7 +45,9 @@ function handleKeyPressedMessagingServer(event) {
 // The message event is fired when data is received through a WebSocket. server sending msg back
 function handleMessage ( event ) {
     let msg = event.data;
-    let messageObject = JSON.parse(msg);
+    // let messageObject = JSON.parse(msg);
+    let messageObject = encodeURIComponent( JSON.stringify( msg ) )
+    console.log(messageObject);
     let type = messageObject.type; 
     let user = messageObject.user;
     let room = messageObject.room;
@@ -79,15 +75,9 @@ function handleMessage ( event ) {
 }
 
 function handleOpen ( event ) {
-    // ws.send("hello server");
     webSocketIsOpen = true;
     console.log("connection openened...");
     alert("connection established");
-}
-
-function handleClose (event){
-    console.log("HandleClosing the webSocket");
-    window.onbeforeunload(event);
 }
 
 function handleError (event) {
@@ -95,20 +85,39 @@ function handleError (event) {
     alert("[error]");
 }
 
-let ws = new WebSocket("ws://localhost:8080");
-ws.onopen = handleOpen;
-ws.onmessage = handleMessage;
-ws.onerror = handleError;
-ws.onclose = handleClose;
-
-
-window.onbeforeunload = () => {
-    // disable onclose handler first
-    handleClose()
+function handleWindowClose(event) {
+    ws.send(UserName.value  + " has left the " + RoomName.value);
+    event.preventDefault();
+    console.log("closing the event");
     ws.close();
 }
 
 
- 
+function main () {
+    ws.onopen = handleOpen;
+    ws.onmessage = handleMessage;
+    ws.onerror = handleError;
+}
+
+
+let ws = new WebSocket("ws://localhost:8080");
+window.onload = main;
+window.onbeforeunload = () => {
+    ws.onclose = () => {}
+    // send leave message
+    handleWindowClose()
+    ws.close()
+}
+
+
+/*
+window.onbeforeunload = () => {
+    //disable on Close handle
+    ws.onclose = handleClose;
+    console.log("handling on before unload");
+    // send leave message
+    ws.close();
+}
+*/
 
 

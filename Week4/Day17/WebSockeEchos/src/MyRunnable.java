@@ -1,4 +1,6 @@
+import javax.sound.sampled.AudioFormat;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
@@ -13,7 +15,7 @@ public class MyRunnable implements Runnable {
     }
 
     @Override
-    public void run() {
+    public void run()  {
 
         //handle the request header
         try {
@@ -58,7 +60,8 @@ public class MyRunnable implements Runnable {
                     } else if (Opcode == 0x2) {
                         System.out.println(" data is a binary");
                     } else if ( Opcode == 0x8) {
-                        System.out.println(" This is the end of the line");
+                        System.out.println(" This is the close frame");
+
                     }
 
                     // mask
@@ -105,11 +108,63 @@ public class MyRunnable implements Runnable {
                     }
                     // TODO validation for Decoded message
                     String decodeString = new String(Decoded);
+
                     System.out.println("Decoded is: " + decodeString);
+
+                    // TODO handle the closing when a client leaves the room
 
 
                     // TODO Respond message
+                    DataOutputStream dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
 
+                    String message = "";
+
+                    byte[] rawData =  message.getBytes();
+                    byte[] frame = new byte[10];
+                    int indexStartRawData = 0;
+                    int length = rawData.length;
+
+                    frame[0] = (byte) 129; // first byte
+
+                    if(length <= 125 ) {
+                        frame[1] = (byte) length;
+                        indexStartRawData = 2;
+                    }else if (length >= 126 && length <= 65535) {
+                        frame[1] = (byte) 126;
+                        frame[2] = (byte) ((length >> 8) & (byte)255);
+                        frame[3] = (byte) (length & (byte) 255);
+                        indexStartRawData = 4;
+                    } else{
+                        frame[1] = (byte)127;
+                        frame[2] = (byte)((length >> 56 ) & (byte)255);
+                        frame[3] = (byte)((length >> 48 ) & (byte)255);
+                        frame[4] = (byte)((length >> 40 ) & (byte)255);
+                        frame[5] = (byte)((length >> 32 ) & (byte)255);
+                        frame[6] = (byte)((length >> 24 ) & (byte)255);
+                        frame[7] = (byte)((length >> 16 ) & (byte)255);
+                        frame[8] = (byte)((length >> 8 ) & (byte)255);
+                        frame[9] = (byte)(length & (byte)255);
+                        indexStartRawData = 10;
+                    }
+
+                    int responseLength = indexStartRawData + length;
+                    byte[] OutPutResponse = new byte[responseLength];
+
+                    // copy the frame bytes into the response
+                    int Index = 0;
+                    for ( int i=0; i<indexStartRawData; i++) {
+                        OutPutResponse[Index] = frame[i];
+                        Index ++;
+                    }
+                    // copy the raw data into the reply
+                    for ( int i=0; i < rawData.length; i++ ) {
+                        OutPutResponse[Index] = rawData[i];
+                        Index ++;
+                    }
+
+                    dataOutputStream.write(OutPutResponse);
+                    dataOutputStream.flush();
+                    System.out.println("test1");
 
 
                 }
