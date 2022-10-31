@@ -1,0 +1,50 @@
+import javax.sound.sampled.AudioFormat;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.HashMap;
+
+public class MyRunnable implements Runnable {
+    private Socket clientSocket = null;
+
+    MyRunnable(Socket Client) {
+        this.clientSocket = Client;
+    }
+
+    @Override
+    public void run()  {
+
+        //handle the request header
+        try {
+            HTTPRequest request = new HTTPRequest(clientSocket);
+            String filename = request.getTheFileName();
+            HashMap<String, String> header = request.getTheBodyOfTheHeader();
+
+            // send the response,
+            HTTPResponse response = new HTTPResponse(clientSocket, filename, header);
+            response.SendResponseHeader();
+//            response.SendResponseBody();
+
+            if (header.containsKey("Sec-WebSocket-Key")){
+                while (true){
+                    WsHandler wsRequest = new WsHandler(clientSocket);
+                    byte[] decodedRequest = wsRequest.readWsRequest();
+
+                    wsRequest.respondWsRequest();
+
+
+                }
+            } else {
+                clientSocket.close();
+            }
+
+        } catch (IOException | NoSuchAlgorithmException | InterruptedException e) {
+            throw new RuntimeException(e);
+
+
+        }
+    }
+}
