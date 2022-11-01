@@ -10,6 +10,8 @@ import java.util.HashMap;
 public class MyRunnable implements Runnable {
     private Socket clientSocket = null;
 
+    public String roomName_ = null;
+
     MyRunnable(Socket Client) {
         this.clientSocket = Client;
     }
@@ -29,12 +31,11 @@ public class MyRunnable implements Runnable {
 //            response.SendResponseBody();
 
             if (header.containsKey("Sec-WebSocket-Key")){
+                WsHandler wsRequest = new WsHandler(clientSocket);
+
                 while (true){
-                    WsHandler wsRequest = new WsHandler(clientSocket);
-                    byte[] decodedRequest = wsRequest.readWsRequest();
-
+                    wsRequest.readWsRequest();
                     wsRequest.respondWsRequest();
-
 
                 }
             } else {

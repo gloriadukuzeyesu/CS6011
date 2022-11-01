@@ -49,9 +49,9 @@ function handleKeyPressedMessagingServer(event) {
 
 function handleMessage ( event ) {
     let msg = event.data;
-    // let messageObject = JSON.parse(msg);
-    let messageObject = encodeURIComponent( JSON.stringify( msg ) )
-    console.log(messageObject);
+    let messageObject = JSON.parse(msg);
+    // let messageObject = encodeURIComponent( JSON.stringify( msg ) )
+    console.log("messageObject +" + messageObject);
     let type = messageObject.type; 
     let user = messageObject.user;
     let room = messageObject.room;
@@ -77,8 +77,6 @@ function handleMessage ( event ) {
     }
 
     console.log(event.data);
-
-
 }
 
 
@@ -93,14 +91,6 @@ function handleError (event) {
     alert("[error]");
 }
 
-function handleWindowClose(event) {
-    ws.send(UserName.value  + " has left the " + RoomName.value);
-    event.preventDefault();
-    console.log("closing the event");
-    // ws.close();
-}
-
-
 function main () {
     ws.onopen = handleOpen;
     ws.onmessage = handleMessage;
@@ -110,22 +100,14 @@ function main () {
 
 let ws = new WebSocket("ws://localhost:8080");
 window.onload = main;
-window.onbeforeunload = () => {
-    ws.onclose = () => {}
-    // send leave message
-    handleWindowClose()
-    ws.close()
-}
 
-
-/*
-window.onbeforeunload = () => {
-    //disable on Close handle
-    ws.onclose = handleClose;
-    console.log("handling on before unload");
-    // send leave message
+window.addEventListener("beforeunload", function(event) {
+    event.preventDefault();
+    ws.send( "leave " + UserName.value + " " + RoomName.value);
     ws.close();
-}
-*/
+    webSocketIsOpen = false;
+})
+
+
 
 

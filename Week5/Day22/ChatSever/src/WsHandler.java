@@ -1,4 +1,3 @@
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -9,16 +8,20 @@ import java.util.Arrays;
 public class WsHandler {
     Socket clientSocket_;
     String MESSAGE;
-    String roomName_; // it is empty as of now
+//    Room roomName_ = Room.RoomName_;
+    String roomName_; // it is null at this point
 
-    int payloadLength;
+    long payloadLength;
     byte [] Decoded;
 
     public WsHandler(Socket clientSocket) {
         this.clientSocket_ = clientSocket;
     }
 
-    public byte[] readWsRequest() throws IOException {
+    public void readWsRequest() throws IOException {
+
+//        Room.ConnectedSockets_.add(clientSocket_); // keep track of connected client
+
         DataInputStream dataInputStream = new DataInputStream(clientSocket_.getInputStream());
         //a. read first 2 bytes and parse those bytes for masks, Opcode, and length
         byte[] ArrayFirstTwoBytes = new byte[2];
@@ -55,11 +58,11 @@ public class WsHandler {
             System.out.println("The length that was sent to us is " + payloadLength);
         } else if (lengthGuess == 126) {
             // read in the next 2 bytes which is equivalent to a short
-            payloadLength = (int) dataInputStream.readShort();
+            payloadLength = dataInputStream.readShort();
             System.out.println("The length that was sent to us is " + payloadLength);
         } else {
             // if length guess => 127, read in the long
-            payloadLength = (int) dataInputStream.readLong();
+            payloadLength = dataInputStream.readLong();
             System.out.println("The payload length is: " + payloadLength);
         }
 
@@ -73,79 +76,119 @@ public class WsHandler {
 
         // TODO fix the decoding formula and print the payload itself
         // payload itself
-        byte[] payload = new byte[payloadLength];
-        dataInputStream.readNBytes(payload, 0, payloadLength);
+        byte[] payload = new byte[(int) payloadLength];
+        dataInputStream.readNBytes(payload, 0, (int) payloadLength);
         System.out.println("payload is : " + Arrays.toString(payload));
 
         // decode the masking key
-        Decoded = new byte[payloadLength];
+        Decoded = new byte[(int)payloadLength];
         if (isMasked) {
             for (int i = 0; i < payloadLength; i++) {
                 Decoded[i] = ((byte) (payload[i] ^ maskingKey[i % 4]));
             }
         }
         // TODO validation for Decoded message
-        String decodeString = new String(Decoded);
-        MESSAGE = new String(Decoded);
+         MESSAGE = new String(Decoded);
 
-        System.out.println("Decoded is: " + decodeString);
+        System.out.println("Decoded is: " + MESSAGE);
 
         // TODO handle the closing when a client leaves the room
-        return Decoded;
-
+        //return Decoded;
     }
 
     public String getJsonMessage (){
+//        JsonObject jsonObject = new JsonObject();
+//        jsonObject.put("type", "join");
         String UserName = "";
         String chatRoom = "";
         String JsonString= "";
         String timeStamp = new SimpleDateFormat("HH:mm").format(new java.util.Date());
-        String typeOfPayload = MESSAGE.split(" ", 2)[0];
+
+        String typeOfPayload = null;
+        if (MESSAGE.length() <=0 ){
+            //TODO find a way of ignoring the message with 0 length
+        }
+
+        if ( MESSAGE.length() > 0 ){
+            typeOfPayload = MESSAGE.split(" ", 2)[0];
+        }
+        if ( typeOfPayload != null ){
+
         System.out.println("Type Of Payload is " + typeOfPayload);
 
         if (!typeOfPayload.equals("join") && (!typeOfPayload.equals("leave"))) {
-            typeOfPayload = "MESSAGE";
+            typeOfPayload = "message";
+
+            System.out.println("Type Of Payload is " + typeOfPayload);
             UserName = MESSAGE.split(" ",2)[0];
             String payLoadMessage = MESSAGE.split(" ",2)[1];
             System.out.println("Payload Message is " + payLoadMessage);
 
-            JsonString += "{ " + "\"" + "type" + "\"" + " : " + "\"" + typeOfPayload + "\", " +
-                    "\"" + "user" + "\"" + " : " + "\"" + UserName + "\", " + "\"" + "room" + "\""
-                    + " : " + "\"" + roomName_ + "\", " + "\"" + "timeStamp" + "\"" + " : " + "\"" + timeStamp + "\", " +
-                    "\"" + "MESSAGE" + "\"" + " : " + "\"" + payLoadMessage + "\"" +
-                    " }";
+            JsonString += "{" + "\"" + "type" + "\"" + ": " + "\"" + typeOfPayload + "\", " +
+                    "\"" + "user" + "\"" + ": " + "\"" + UserName + "\", " + "\"" + "room" + "\""
+                    + ": " + "\"" + roomName_ + "\", " + "\"" + "timeStamp" + "\"" + ": " + "\"" + timeStamp + "\", " +
+                    "\"" + "message" + "\"" + ": " + "\"" + payLoadMessage + "\"" +
+                    "}";
 
             System.out.println("Json String is" + JsonString);
 
-        } else{
+            // put the socket into the array list
+//            Room r = Room.getRoom(roomName_);
+//            Room newRoom = new Room(roomName_);
+//            Room.ConnectedSockets_.add(clientSocket_);
+           // System.out.println(" test room is " + r);
+
+
+        } else {
+            // join or leave
             UserName = MESSAGE.split(" ", 3)[1];
             chatRoom = MESSAGE.split(" ", 3)[2];
             roomName_ = chatRoom;
-            JsonString += "{ " + "\"" + "type" + "\"" + " : " + "\"" + typeOfPayload + "\", " +
-                    "\"" + "room" + "\"" + " : " + "\"" + roomName_ + "\", " + "\"" + "timeStamp" + "\"" + " : " + "\"" +
-                    timeStamp + "\", " + "\"" + "user" + "\"" + " : " + "\"" + UserName + "\"" + " }";
+
+            // need to handle leave slightly differenty
+            // assuming just join msgs here
+            Room room = Room.getRoom( roomName_ );
+            room.addClientSocket( clientSocket_ );
+
+            JsonString += "{" + "\"" + "type" + "\"" + ": " + "\"" + typeOfPayload + "\", " +
+                    "\"" + "room" + "\"" + ": " + "\"" + roomName_ + "\", " + "\"" + "timeStamp" + "\"" + ": " + "\"" +
+                    timeStamp + "\", " + "\"" + "user" + "\"" + ": " + "\"" + UserName + "\"" + "}";
 
             System.out.println("Json String is" + JsonString);
 
         }
-        return JsonString;
+            return JsonString;
+        }
+        return null;
     }
 
     public void respondWsRequest( ) throws IOException {
 
-        DataOutputStream dataOutputStream = new DataOutputStream(clientSocket_.getOutputStream());
-        dataOutputStream.writeByte(0x81);
-        byte payloadLengthInBytes = (byte)payloadLength;
-        dataOutputStream.writeByte(payloadLengthInBytes);
-        dataOutputStream.write(Decoded);
-        dataOutputStream.flush();
-/*
-        // bring in the message to send
         String JsonMessageToClient = getJsonMessage();
-        dataOutputStream.write(OutPutResponse);
 
-        dataOutputStream.write(JsonMessageToClient.getBytes());
-        System.out.println("test1")*/;
+        // The getJsonMessage actually determines the "roomName_" so we
+        // have to ask for the room after we call getJsonMessage().
+        Room room = Room.getRoom( roomName_ );
+
+        System.out.println( "Server, about to send msg to " + room.getClients().size() + " clients");
+        for (Socket socket : room.getClients() ) {
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            dataOutputStream.writeByte(0x81);
+            byte payloadLengthInBytes = (byte)JsonMessageToClient.length();
+            dataOutputStream.writeByte(payloadLengthInBytes);
+//        dataOutputStream.write(Decoded);
+            dataOutputStream.write(JsonMessageToClient.getBytes());
+            dataOutputStream.flush();
+        }
+
+
+/*
+        DataOutputStream dataOutputStream = new DataOutputStream(clientSocket_.getOutputStream());
+*/
+
+
     }
+
+
 
 }
