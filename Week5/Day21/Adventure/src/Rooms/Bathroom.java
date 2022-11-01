@@ -1,68 +1,61 @@
+/*
+ * Gloria Dukuzeyesu
+ * Collaborated with Muyuan Zhang
+ */
+
 package Rooms;
+
 import Game.Adventure;
 import Items.Item;
 
-// Name: Gloria Dukuzeyesu
 public class Bathroom extends Room {
-
-    // a player will enter the room and pick up the sprayBottle and water the pot plant
-    // the pot plant will come from the garden as
-
-    private boolean locked_ = true;
+    private Item sprayBottle = new Item("spraybottle", "Some times, I wet my plants...");
 
     public Bathroom() {
-        super("Bathroom", "wash away your troubles with bubble bath");
-        Item sprayBottle = new Item("spraybottle", " Some times, I wet my plants....");
+        super("Bathroom", "Wash away your troubles with bubble bath.");
         items_.add(sprayBottle);
     }
 
-
-    // let the player enter the door
-    @Override
-    public void playerEntered() {
-        if (locked_) {
-            System.out.println(" You entered the bathroom");
-        }
-    }
-
-    @Override
-    public Room goThroughDoor(int doorNum) {
-        if (locked_) {
-            System.out.println("The door is locked!");
-            return null;
-        } else {
-            return super.goThroughDoor(doorNum);
-        }
-    }
-
     public boolean handleCommand(String[] subcommands) {
-
         if (subcommands.length <= 1) {
             return false;
         }
+
         String cmd = subcommands[0];
         String attr = subcommands[1];
 
-        // unlock, use grand hall and go the garden pickup spraybottle
+        // if the command is "pickup spraybottle"
         if (cmd.equals("pickup") && attr.equals("spraybottle")) {
+            System.out.println("You grabbed the spray bottle.");
+            // append the sprayBottle to the inventory
+            Adventure.inventory.add(sprayBottle);
 
-            boolean carryBottle = false;
+            return true;
+        }
 
+        // if the command is "water roses"
+        else if (cmd.equals("water") && attr.equals("roses")) {
             for (Item item : Adventure.inventory) {
-                if (item.getName().equals("sprayBottle")) {
-                    carryBottle = true;
+                // if the player has the roses from the garden
+                if (item.getName().equals("roses")) {
+                    // the roses are watered now
+                    Garden.watered_ = true;
                     break;
                 }
             }
-            if (carryBottle) {
-                System.out.println("You grabbed the spray bottle .");
-                carryBottle = false;
-            } else {
-                System.out.println("You don't have the Bottle.");
+
+            // if the roses are watered
+            if (Garden.watered_) {
+                System.out.println("You watered the roses. Thank you!");
+                Garden.printMap();
+            }
+            // if the player do not have the roses from the garden
+            else {
+                System.out.println("You don't have anything to water.");
             }
             return true;
         }
+
         return false;
     }
 }
-

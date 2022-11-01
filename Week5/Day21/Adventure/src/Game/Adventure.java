@@ -3,6 +3,7 @@ package Game;
 import Items.Item;
 import Rooms.Bathroom;
 import Rooms.Cell;
+import Rooms.Garden;
 import Rooms.Room;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class Adventure {
         Room cell = new Cell();
 
         Room bathroom = new Bathroom();
+        Room gardern = new Garden();
 
 
         entrance.addConnection( cell );
@@ -38,6 +40,7 @@ public class Adventure {
         hall.addConnection( kitchen );
         hall.addConnection( stairs );
         hall.addConnection( bathroom);
+        hall.addConnection(gardern);
         stairs.addConnection( bedroom );
         bedroom.addConnection( balcony );
         // bedroom.addConnection( telep );
