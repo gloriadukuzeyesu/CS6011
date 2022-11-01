@@ -1,8 +1,6 @@
 package com.example.synthesizer;
-
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
@@ -23,13 +21,10 @@ public class AudioComponentWidgetBase extends Pane implements BaseWidgetAndSpeak
     protected double mouseStartDragX_, mouseStartDragY_, widgetStartDragX_, widgetStartDragY_;
     protected Line line_ = new Line();
     protected VBox rightRightSide_;
-    private  String ComponentName_ = "AudioComponentWidget";
-    private Point2D lineEnd_;
 
+    AudioComponentWidgetBase() {}
 
-    AudioComponentWidgetBase  () {}
-
-    AudioComponentWidgetBase(AudioComponent ac, AnchorPane parent, String name){
+    AudioComponentWidgetBase(AudioComponent ac, AnchorPane parent, String name) {
         audioComponent_ = ac;
         parent_ = parent;
         baseLayout_ = new HBox();
@@ -46,7 +41,7 @@ public class AudioComponentWidgetBase extends Pane implements BaseWidgetAndSpeak
         rightRightSide_.setAlignment(Pos.CENTER);
         rightRightSide_.setPadding(new Insets(6));
         rightRightSide_.setSpacing(5);
-;
+        ;
 
         /***** center portion of the widget *****/
         centerComponent_ = new VBox();
@@ -76,12 +71,16 @@ public class AudioComponentWidgetBase extends Pane implements BaseWidgetAndSpeak
         line_.setStartY(bounds.getCenterY() - parentBounds.getMinY());
         System.out.println("dragging the widget and the line");
     }
+
     public void startDrag(MouseEvent e) {
-        mouseStartDragX_  = e.getSceneX();
+        mouseStartDragX_ = e.getSceneX();
         mouseStartDragY_ = e.getSceneY();
         widgetStartDragX_ = this.getLayoutX();
         widgetStartDragY_ = this.getLayoutY();
     }
+
+  /* this fx will remove the widget from the parent, and remove it from all connected widgets, remove  the audio components if its sinewave connected to the
+    volume widget */
     public void closeWidget() {
         parent_.getChildren().remove(this);
         System.out.println("widget has been removed");
@@ -91,13 +90,14 @@ public class AudioComponentWidgetBase extends Pane implements BaseWidgetAndSpeak
         }
         SynthesizeApplication.widgets_.remove(this); // spaghetti code.
         SpeakerWidget.SpeakerWidgets_.remove(this);
+        VolumeWidget.AdjustVolume_.removeInput(audioComponent_);
     }
 
     public void startConnection(MouseEvent e, Circle outputCircle) {
         if (line_ != null) {
             // remove that line so that we can create a new connection
             parent_.getChildren().remove(line_);
-            SpeakerWidget.SpeakerWidgets_.remove (this);
+            SpeakerWidget.SpeakerWidgets_.remove(this);
             SynthesizeApplication.widgets_.remove(this);
             System.out.println("remove the line");
         }
@@ -112,51 +112,44 @@ public class AudioComponentWidgetBase extends Pane implements BaseWidgetAndSpeak
         parent_.getChildren().add(line_);
         System.out.println("start connection");
     }
-    public  void moveConnection(MouseEvent e, Circle outputCircle) {
+
+    public void moveConnection(MouseEvent e, Circle outputCircle) {
         Bounds parentBounds = parent_.getBoundsInParent();
         line_.setEndX(e.getSceneX() - parentBounds.getMinX());
         line_.setEndY(e.getSceneY() - parentBounds.getMinY());
         System.out.println("move connection");
     }
-    public void endConnection(MouseEvent e, Circle outputCircle) {
 
-        Circle volumeReceiver = VolumeWidget.VolumeOutput_;
-        Bounds Volume_Receiver_Bounds = volumeReceiver.localToScreen(volumeReceiver.getBoundsInLocal());
-        double distanceToVolume = Math.sqrt(Math.pow(Volume_Receiver_Bounds.getCenterX() - e.getScreenX(), 2.0) +
-                Math.pow(Volume_Receiver_Bounds.getCenterY() - e.getScreenY(), 2.0));
+    public void endConnection(MouseEvent e, Circle outputCircle) {
 
         Circle speaker = SpeakerWidget.speaker_;
         Bounds SpeakerBounds = speaker.localToScreen(speaker.getBoundsInLocal());
         double distanceToSpeaker = Math.sqrt(Math.pow(SpeakerBounds.getCenterX() - e.getScreenX(), 2.0) +
                 Math.pow(SpeakerBounds.getCenterY() - e.getScreenY(), 2.0));
 
+        Circle volumeReceiver = VolumeWidget.VolumeOutput_;
+        Bounds Volume_Receiver_Bounds = volumeReceiver.localToScreen(volumeReceiver.getBoundsInLocal());
+        double distanceToVolume = Math.sqrt(Math.pow(Volume_Receiver_Bounds.getCenterX() - e.getScreenX(), 2.0) +
+                Math.pow(Volume_Receiver_Bounds.getCenterY() - e.getScreenY(), 2.0));
+
         if (distanceToSpeaker < SPEAKER_RADIUS) {
             SpeakerWidget.SpeakerWidgets_.add(this);
-//            SynthesizeApplication.widgets_.add(this);
             System.out.println("sineWave widget connected to Speaker");
-        } else if(distanceToVolume < VOLUME_RADIUS_) {
-//            SynthesizeApplication.widgets_.add(this);
-//            SpeakerWidget.SpeakerWidgets_.add(this);
+        } else if (distanceToVolume < VOLUME_RADIUS_) {
+            VolumeWidget.AdjustVolume_.connectInput(audioComponent_);
             System.out.println("SinewaveWidget connected to VolumeWidget");
         } else {
             parent_.getChildren().remove(line_);
             line_ = null;
             SpeakerWidget.SpeakerWidgets_.remove(this);
             SynthesizeApplication.widgets_.remove(this);
+            VolumeWidget.AdjustVolume_.removeInput(audioComponent_);
+
         }
-//        SynthesizeApplication.widgets_.add(this);
-        System.out.println("stop connection");
     }
 
     public AudioComponent getAudioComponent() {
         return audioComponent_;
     }
-
-    public String getComponentName(){
-        return ComponentName_;
-    }
-
-
-
 
 }

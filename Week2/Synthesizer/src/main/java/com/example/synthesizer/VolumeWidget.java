@@ -13,24 +13,19 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-import static com.example.synthesizer.SpeakerWidget.SPEAKER_RADIUS;
-
 public class VolumeWidget extends AudioComponentWidgetBase {
 
-    private Slider slider = new Slider(0,2,1);
-    private Label title = new Label();
+    private final Slider slider = new Slider(0,2,1);
+    private final Label title = new Label();
     private  Circle VolumeConnector_;
     public static Circle VolumeOutput_;
     public static double VOLUME_RADIUS_ = 20;
+    protected static Volume AdjustVolume_;
 
-
-    private String ComponentName_ = "Volume";
-
-
-    public VolumeWidget(AudioComponent ac, AnchorPane parent, String name) {
+    public VolumeWidget(Volume ac, AnchorPane parent, String name) {
         super(ac, parent, name);
+        AdjustVolume_ = ac;
     }
-
 
     public void CreateVolumeWidget() {
         title.setMouseTransparent(true);
@@ -41,8 +36,8 @@ public class VolumeWidget extends AudioComponentWidgetBase {
         centerComponent_.getChildren().add(slider);
 
         // Circle for the volume widget
-        VBox volumebar = new VBox();
-        volumebar.setAlignment(Pos.CENTER);
+        VBox volumeBox = new VBox();
+        volumeBox.setAlignment(Pos.CENTER);
 
         VolumeConnector_ = new Circle(VOLUME_RADIUS_);
         VolumeConnector_.setFill(Color.DARKORCHID);
@@ -50,8 +45,8 @@ public class VolumeWidget extends AudioComponentWidgetBase {
         VolumeConnector_.setOnMouseDragged(e -> moveConnection(e, VolumeConnector_));
         VolumeConnector_.setOnMouseReleased(e ->endConnection(e, VolumeConnector_));
 
-        volumebar.getChildren().add(VolumeConnector_);
-        rightRightSide_.getChildren().add(volumebar);
+        volumeBox.getChildren().add(VolumeConnector_);
+        rightRightSide_.getChildren().add(volumeBox);
 
         HBox VolumeToSpeaker = new HBox();
         VolumeToSpeaker.setAlignment(Pos.CENTER);
@@ -60,51 +55,33 @@ public class VolumeWidget extends AudioComponentWidgetBase {
         centerComponent_.getChildren().add(VolumeToSpeaker);
     }
 
-
-/*
-    public void endConnection(MouseEvent e, Circle outputCircle) {
-        Circle speaker = SpeakerWidget.speaker_;
-        Bounds SpeakerBounds = speaker.localToScreen(speaker.getBoundsInLocal());
-        double distance = Math.sqrt(Math.pow(SpeakerBounds.getCenterX() - e.getScreenX(), 2.0) +
-                Math.pow(SpeakerBounds.getCenterY() - e.getScreenY(), 2.0));
-
-        if (distance < SPEAKER_RADIUS) {
-            SpeakerWidget.SpeakerWidgets_.add(this);
-//            SynthesizeApplication.widgets_.add(this);
-            System.out.println("VolumeWidget connected to Speaker");
-        } else {
-            parent_.getChildren().remove(line_);
-            line_ = null;
-            SpeakerWidget.SpeakerWidgets_.remove(this);
-            SynthesizeApplication.widgets_.remove(this);
-        }
-        System.out.println("Cut connection between volume and speaker");
-    }
-*/
+    /* this fx enables the slider to move while adjusting the volume of the input audio component*/
     public void handleSlider(MouseEvent e) {
-        double value = (double) slider.getValue();
+        double value = slider.getValue();
         double roundedValue = Math.round(value * 100.0) /100.0;
         title.setText("Volume " + roundedValue + " ");
-        Volume adjustVolume = new Volume(roundedValue);
-        adjustVolume.connectInput(audioComponent_);
+        AdjustVolume_.setVolumeScale(roundedValue);
     }
+
+    /*this fx enables the volume widget to move around the canvas. It finds the widget x and y location and the x and y locations
+     of the  mouse on scene.*/
     public void handleDrag(MouseEvent e) {
         double mouseDelX = e.getSceneX() - mouseStartDragX_;
         double mouseDelY = e.getSceneY() - mouseStartDragY_;
-        this.relocate(widgetStartDragX_ + mouseDelX, widgetStartDragY_ + mouseDelY);
+        this.relocate(widgetStartDragX_ + mouseDelX, widgetStartDragY_ + mouseDelY); // the widget relocated to this Updated new location
 
         Bounds parentBounds = parent_.getBoundsInParent();
-        Bounds bounds = SpeakerWidget.speaker_.localToScene(SpeakerWidget.speaker_.getBoundsInLocal());
+        Bounds bounds = VolumeConnector_.localToScene(VolumeConnector_.getBoundsInLocal());
+
 
         line_.setStartX(bounds.getCenterX() - parentBounds.getMinX());
         line_.setStartY(bounds.getCenterY() - parentBounds.getMinY());
         System.out.println("connected");
 
-
     }
-    @Override
-    public String getComponentName(){
-        return ComponentName_;
+
+    public AudioComponent getAudioComponent() {
+        return AdjustVolume_;
     }
 
 }

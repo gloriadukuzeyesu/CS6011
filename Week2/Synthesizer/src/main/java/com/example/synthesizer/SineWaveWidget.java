@@ -18,11 +18,12 @@ public class SineWaveWidget extends AudioComponentWidgetBase {
     public SineWaveWidget (AudioComponent ac, AnchorPane parent, String name) {
         super(ac, parent, name);
     }
+
     public void CreateSineWaveWidget( ){
+
         title.setMouseTransparent(true);
-        title.setText("SineWave");
-        slider.setOnMouseDragged(e-> handleSlider(e));
         title.setText("SineWave 440Hz");
+        slider.setOnMouseDragged(e-> handleSlider(e));
         slider.setPadding(new Insets(6));
         centerComponent_.getChildren().add(title);
         centerComponent_.getChildren().add(slider);
@@ -40,8 +41,8 @@ public class SineWaveWidget extends AudioComponentWidgetBase {
 
         rightRightSide_.getChildren().add(OutputCircle_);
 
-
     }
+
     public void handleSlider(MouseEvent e) {
         int frequency = (int) slider.getValue();
         title.setText("SineWave " + frequency + "Hz");

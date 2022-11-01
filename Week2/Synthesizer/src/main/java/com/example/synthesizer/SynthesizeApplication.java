@@ -16,18 +16,44 @@ public class SynthesizeApplication extends Application {
     public static AnchorPane mainCanvas_;
     public static ArrayList<AudioComponentWidgetBase> widgets_ = new ArrayList<>();
     private double layoutX_ = 20;
-    private double layoutY_ = 48;
-
+    private double layoutY_ = 40;
 
     ArrayList<AudioComponentWidgetBase> SpeakerWidgets = SpeakerWidget.SpeakerWidgets_;
-
-
 
     @Override
     public void start(Stage stage) throws IOException {
         // Parent
         BorderPane root = new BorderPane();
-        Scene scene = new Scene(root, 800, 500);
+        Scene scene = new Scene(root, 900, 500);
+        /*********************** Top panel for the scene ***********************/
+        HBox topPanel = new HBox();
+        topPanel.setPadding(new Insets(5));
+        topPanel.setSpacing(80);
+        topPanel.setAlignment(Pos.CENTER);
+        topPanel.setStyle("-fx-background-color: oldlace");
+
+        Button E4_Note = new Button("E4");
+        Button B_Note = new Button("B3");
+        Button G_Note = new Button("G3");
+        Button D_Note = new Button("D3");
+        Button A_Note = new Button("A2");
+        Button E2_Note = new Button("E2");
+
+        // Reference: https://en.wikipedia.org/wiki/Guitar_tunings
+        E4_Note.setOnAction(e -> PlayNoteKey(329.63));
+        B_Note.setOnAction(e -> PlayNoteKey(246.94));
+        G_Note.setOnAction(e -> PlayNoteKey(196.00));
+        D_Note.setOnAction(e -> PlayNoteKey(146.83));
+        A_Note.setOnAction(e -> PlayNoteKey(110.00));
+        E2_Note.setOnAction(e -> PlayNoteKey(82.41));
+
+        topPanel.getChildren().add(E4_Note);
+        topPanel.getChildren().add(B_Note);
+        topPanel.getChildren().add(G_Note);
+        topPanel.getChildren().add(D_Note);
+        topPanel.getChildren().add(A_Note);
+        topPanel.getChildren().add(E2_Note);
+
 
         /*********************** right panel for the scene ***********************/
         VBox rightPanel = new VBox();
@@ -38,12 +64,12 @@ public class SynthesizeApplication extends Application {
 
         Button sineWaveButton = new Button("SineWave");
         sineWaveButton.setTextFill(Color.BLACK);
-        sineWaveButton.setOnAction(e -> createSineWaveComponent("SineWave"));
+        sineWaveButton.setOnAction(e -> createSineWaveComponent());
 
 
         Button volumeButton = new Button("Volume");
         volumeButton.setTextFill(Color.BLACK);
-        volumeButton.setOnAction(e -> createVolumeComponent("Volume"));
+        volumeButton.setOnAction(e -> createVolumeComponent());
 
 
         // add children of right panel
@@ -73,6 +99,7 @@ public class SynthesizeApplication extends Application {
         //*********************** Put all panels into the parent ***********************//
         // put stuffs into the root container
         root.setRight(rightPanel);
+        root.setTop(topPanel);
         root.setBottom(buttomPanel);
         root.setCenter(mainCanvas_);
 
@@ -81,17 +108,18 @@ public class SynthesizeApplication extends Application {
         stage.show();
     }
 
-    private void createVolumeComponent(String volume) {
-        AudioComponent vol = new Volume(1);
+
+    private void createVolumeComponent() {
+        Volume vol = new Volume(1);
         VolumeWidget vW = new VolumeWidget(vol, mainCanvas_, "Volume");
         vW.CreateVolumeWidget();
-        vW.setLayoutX(10);
-        vW.setLayoutY(400);
+        vW.setLayoutX(30);
+        vW.setLayoutY(350);
         widgets_.add(vW);
         System.out.println("Volume widget created");
     }
 
-    private void createSineWaveComponent(String sineWave) {
+    private void createSineWaveComponent() {
         AudioComponent SineWave = new SineWave(440);
         SineWaveWidget sineWidget = new SineWaveWidget(SineWave, mainCanvas_, "SineWave");
         sineWidget.CreateSineWaveWidget();
@@ -100,21 +128,23 @@ public class SynthesizeApplication extends Application {
         sineWidget.setLayoutY(layoutY_);
         System.out.println("SineWave widget created");
 
-        // avoid the widgets from being overlaid
-//        if (layoutX_ < 20 && layoutY_ < 400) {
-//            layoutX_ += 100;
-//            System.out.println(" layoutX_ is "+ layoutX_);
-//        }
-//        else if (layoutY_ < 200) {
-//            layoutX_ = 20;
-//            layoutY_ += 200;
-//            System.out.println( " layoutY_ is "+ layoutY_ + "and layoutX_ is " + layoutX_);
-//
-//        }
-//        else {
-//            layoutX_ -= 600;
-//            layoutY_ -= 180;
-//        }
+/*//         avoid the widgets from being overlaid
+        if (layoutX_ < 20 && layoutY_ < 400) {
+            layoutX_ += 100;
+            System.out.println(" layoutX_ is "+ layoutX_);
+        }
+        else if (layoutY_ < 200) {
+            layoutX_ = 20;
+            layoutY_ += 200;
+            System.out.println( " layoutY_ is "+ layoutY_ + "and layoutX_ is " + layoutX_);
+
+        }
+        else {
+            layoutX_ -= 600;
+            layoutY_ -= 180;
+            System.out.println( " layoutY_ is "+ layoutY_ + "and layoutX_ is " + layoutX_);
+
+        }*/
     }
 
     private void PlayNetwork() {
@@ -142,6 +172,24 @@ public class SynthesizeApplication extends Application {
         } catch (LineUnavailableException e) {
             System.out.println("failed to open the clip");
         }
+    }
+
+    private void PlayNoteKey(double frequency) {
+        try {
+            Clip c = AudioSystem.getClip();
+            AudioFormat format = new AudioFormat(44100, 16, 1, true, false);
+
+            AudioComponent KeyNote = new SineWave((int) frequency);
+            AudioClip clip = KeyNote.getClip();
+
+            c.open(format, clip.data, 0, clip.data.length);
+            c.start();
+            c.addLineListener(e -> handleAudioDone(e, c)); // its job is to wait until the event is stopped and then close the clip
+
+        } catch (LineUnavailableException e) {
+            System.out.println("failed to open the clip");
+        }
+
     }
 
     private void handleAudioDone(LineEvent e, Clip c) {

@@ -1,9 +1,8 @@
 package com.example.synthesizer;
 
 public class Volume implements AudioComponent{
-
-    double volumeScale;
-    AudioComponent input_; // from the interface AudioComponent how to bring in your sineWave
+    private double volumeScale;
+    private AudioComponent input_; // from the interface AudioComponent how to bring in your sineWave
 
     // constructor
     Volume(double vol ) {
@@ -14,7 +13,6 @@ public class Volume implements AudioComponent{
     public AudioClip getClip() {
         AudioClip AdjustedClip = new AudioClip();
         AudioClip original = input_.getClip();
-
 
         for ( int i= 0; i< AudioClip.TotalSamples; i++){
 
@@ -40,5 +38,13 @@ public class Volume implements AudioComponent{
     @Override
     public void connectInput(AudioComponent input) {
         input_ = input;
+    }
+
+    public void setVolumeScale(double scale){
+        volumeScale = scale;
+    }
+
+    public void removeInput(AudioComponent input) {
+        input_ = null;
     }
 }
