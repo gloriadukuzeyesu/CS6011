@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">HelloAndroid</string>
+    <string name="room_name">Room Name </string>
+    <string name="button">Button</string>
+    <string name="backButton">Button</string>
+    <string name="backbutton">BackButton</string>
+</resources>
