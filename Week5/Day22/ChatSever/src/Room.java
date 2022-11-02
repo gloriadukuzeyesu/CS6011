@@ -30,12 +30,6 @@ public class Room {
     }
 
 
-    // send message to everyone in the room
-    public synchronized void broadCastMessage(String messag, Socket Client) {
-        // server sending the message to all connected client
-
-    }
-
     // remove client
     public synchronized void removeClient( Socket client ) {
         ConnectedSockets_.remove( client );

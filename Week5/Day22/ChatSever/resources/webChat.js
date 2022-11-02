@@ -6,7 +6,6 @@ let UserName = document.getElementById("User_ID");
 let MessageToServer = document.getElementById("Message_ID");
 
 RoomName.addEventListener("keypress", handleKeyPressedCB );
-// UserName.addEventListener("keypress", handleKeyPressedCB );
 MessageToServer.addEventListener("keypress",handleKeyPressedMessagingServer);
 
 let webSocketIsOpen = false;
@@ -41,12 +40,8 @@ function handleKeyPressedMessagingServer(event) {
         event.preventDefault();
     }
 }
-/*function handleMessage ( event ) {
-    console.log(event.data);
-}*/
 
 // The message event is fired when data is received through a WebSocket. server sending msg back
-
 function handleMessage ( event ) {
     let msg = event.data;
     let messageObject = JSON.parse(msg);
@@ -79,7 +74,6 @@ function handleMessage ( event ) {
     console.log(event.data);
 }
 
-
 function handleOpen ( event ) {
     webSocketIsOpen = true;
     console.log("connection openened...");
@@ -106,6 +100,7 @@ window.addEventListener("beforeunload", function(event) {
     ws.send( "leave " + UserName.value + " " + RoomName.value);
     ws.close();
     webSocketIsOpen = false;
+    console.log("client is leaving");
 })
 
 
