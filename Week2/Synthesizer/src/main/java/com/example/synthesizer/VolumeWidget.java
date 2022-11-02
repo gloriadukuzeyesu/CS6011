@@ -65,6 +65,7 @@ public class VolumeWidget extends AudioComponentWidgetBase {
 
     /*this fx enables the volume widget to move around the canvas. It finds the widget x and y location and the x and y locations
      of the  mouse on scene.*/
+    @Override
     public void handleDrag(MouseEvent e) {
         double mouseDelX = e.getSceneX() - mouseStartDragX_;
         double mouseDelY = e.getSceneY() - mouseStartDragY_;
@@ -73,10 +74,13 @@ public class VolumeWidget extends AudioComponentWidgetBase {
         Bounds parentBounds = parent_.getBoundsInParent();
         Bounds bounds = VolumeConnector_.localToScene(VolumeConnector_.getBoundsInLocal());
 
+        if ( line_ != null ) {
+            line_.setStartX(bounds.getCenterX() - parentBounds.getMinX());
+            line_.setStartY(bounds.getCenterY() - parentBounds.getMinY());
+            System.out.println("connected");
+        }
 
-        line_.setStartX(bounds.getCenterX() - parentBounds.getMinX());
-        line_.setStartY(bounds.getCenterY() - parentBounds.getMinY());
-        System.out.println("connected");
+
 
     }
 

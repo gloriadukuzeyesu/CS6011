@@ -59,7 +59,10 @@ public class AudioComponentWidgetBase extends Pane implements BaseWidgetAndSpeak
         parent_.getChildren().add(this);
     }
 
-    public void handleDrag(MouseEvent e) {
+    public void handleDrag(MouseEvent e ) {
+
+    }
+    /*public void handleDrag(MouseEvent e) {
         double mouseDelX = e.getSceneX() - mouseStartDragX_;
         double mouseDelY = e.getSceneY() - mouseStartDragY_;
         this.relocate(widgetStartDragX_ + mouseDelX, widgetStartDragY_ + mouseDelY);
@@ -67,10 +70,14 @@ public class AudioComponentWidgetBase extends Pane implements BaseWidgetAndSpeak
         Bounds parentBounds = parent_.getBoundsInParent();
         Bounds bounds = SineWaveWidget.OutputCircle_.localToScene(SineWaveWidget.OutputCircle_.getBoundsInLocal());
 
-        line_.setStartX(bounds.getCenterX() - parentBounds.getMinX());
-        line_.setStartY(bounds.getCenterY() - parentBounds.getMinY());
-        System.out.println("dragging the widget and the line");
-    }
+        if( line_ != null ) {
+            line_.setStartX(bounds.getCenterX() - parentBounds.getMinX());
+            line_.setStartY(bounds.getCenterY() - parentBounds.getMinY());
+            System.out.println("dragging the widget and the line");
+        }
+
+
+    }*/
 
     public void startDrag(MouseEvent e) {
         mouseStartDragX_ = e.getSceneX();
