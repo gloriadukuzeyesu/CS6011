@@ -20,7 +20,7 @@ https://github.com/gloriadukuzeyesu/CS6011/tree/main/Week5/Day22/ChatSever/src
 
 3. An Emulator with a login page should pop up. 
 
-   <img src="README/loginPage.png" alt="Screen Shot 2022-11-06 at 9.08.45 PM" style="zoom:33%;" />
+   <img src="README/loginPage.png" alt="Screen Shot 2022-11-06 at 9.08.45 PM" style="zoom: 25%;" />
 
  
 
@@ -30,7 +30,7 @@ https://github.com/gloriadukuzeyesu/CS6011/tree/main/Week5/Day22/ChatSever/src
 
    
 
-   <img src="README/typingInCredentials.png" alt="Screen Shot 2022-11-06 at 9.09.35 PM" style="zoom:33%;" />
+   <img src="README/typingInCredentials.png" alt="Screen Shot 2022-11-06 at 9.09.35 PM" style="zoom: 25%;" />
 
    
 
@@ -38,11 +38,11 @@ https://github.com/gloriadukuzeyesu/CS6011/tree/main/Week5/Day22/ChatSever/src
 
 5. Press button `Login` to enter into your room
 
-   <img src="README/pressLoginButton.png" alt="Screen Shot 2022-11-06 at 9.10.30 PM" style="zoom:33%;" />
+   <img src="README/pressLoginButton.png" alt="Screen Shot 2022-11-06 at 9.10.30 PM" style="zoom: 25%;" />
 
 6.  Your room name should appear at the top of the screen. Your username and little message that you joined the room will appear on the screen. The time stamp you login appears next to your message
 
-7. <img src="README/chatroompage.png" alt="Screen Shot 2022-11-06 at 9.11.02 PM" style="zoom:33%;" />
+7. <img src="README/chatroompage.png" alt="Screen Shot 2022-11-06 at 9.11.02 PM" style="zoom: 25%;" />
 
    
 
@@ -52,13 +52,13 @@ https://github.com/gloriadukuzeyesu/CS6011/tree/main/Week5/Day22/ChatSever/src
 
    
 
-   <img src="README/messaga.png" alt="Screen Shot 2022-11-06 at 9.12.33 PM" style="zoom:33%;" />
+   <img src="README/messaga.png" alt="Screen Shot 2022-11-06 at 9.12.33 PM" style="zoom: 25%;" />
 
 9. Your username, message, and time stam should appear next to each other other. with the format `username`   then `message` then `timestamp`
 
 10. Try to log out and see what happens. Click on the button `SIGNOUT`.   🤩  You will be taken back to the login page 
 
-    <img src="README/backToLoginPage.png" alt="Screen Shot 2022-11-06 at 9.15.04 PM" style="zoom:33%;" />
+    <img src="README/backToLoginPage.png" alt="Screen Shot 2022-11-06 at 9.15.04 PM" style="zoom: 25%;" />
 
 
 
@@ -68,7 +68,7 @@ https://github.com/gloriadukuzeyesu/CS6011/tree/main/Week5/Day22/ChatSever/src
 
    
 
-   <img src="README/multiplePeople.png" style="zoom:33%;" />
+   <img src="README/multiplePeople.png" style="zoom: 25%;" />
 
 
 
@@ -80,6 +80,6 @@ Thanks for visiting my first Android Chat APP. I hope you enjoyed my application
 
 
 
-Regards,
+**Regards,**
 
-Gloria 
+**Gloria** 
