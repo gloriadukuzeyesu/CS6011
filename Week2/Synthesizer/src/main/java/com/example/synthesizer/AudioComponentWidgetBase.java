@@ -22,7 +22,7 @@ public class AudioComponentWidgetBase extends Pane implements BaseWidgetAndSpeak
     protected Line line_ = new Line();
     protected VBox rightRightSide_;
 
-    AudioComponentWidgetBase() {}
+//    AudioComponentWidgetBase() {}
 
     AudioComponentWidgetBase(AudioComponent ac, AnchorPane parent, String name) {
         audioComponent_ = ac;

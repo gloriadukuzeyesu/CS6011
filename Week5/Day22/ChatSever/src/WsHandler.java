@@ -129,64 +129,6 @@ public class WsHandler {
     }
 
 
-
- /*   public String getJsonMessage (){
-        String UserName = "";
-        String chatRoom = "";
-        String JsonString= "";
-        String timeStamp = new SimpleDateFormat("HH:mm").format(new java.util.Date());
-
-        String typeOfPayload = null;
-        if (MESSAGE.length() <=0 ){
-            //TODO find a way of ignoring the message with 0 length
-        }
-
-        if ( MESSAGE.length() > 0 ){
-            typeOfPayload = MESSAGE.split(" ", 2)[0];
-        }
-        if ( typeOfPayload != null ){
-
-            System.out.println("Type Of Payload is " + typeOfPayload);
-
-            if (!typeOfPayload.equals("join") && (!typeOfPayload.equals("leave"))) {
-                typeOfPayload = "message";
-
-                System.out.println("Type Of Payload is " + typeOfPayload);
-                UserName = MESSAGE.split(" ",2)[0];
-                String payLoadMessage = MESSAGE.split(" ",2)[1];
-                System.out.println("Payload Message is " + payLoadMessage);
-
-                JsonString += "{" + "\"" + "type" + "\"" + ": " + "\"" + typeOfPayload + "\", " +
-                        "\"" + "user" + "\"" + ": " + "\"" + UserName + "\", " + "\"" + "room" + "\""
-                        + ": " + "\"" + roomName_ + "\", " + "\"" + "timeStamp" + "\"" + ": " + "\"" + timeStamp + "\", " +
-                        "\"" + "message" + "\"" + ": " + "\"" + payLoadMessage + "\"" +
-                        "}";
-
-                System.out.println("Json String is" + JsonString);
-
-            } else {
-                // join or leave
-                UserName = MESSAGE.split(" ", 3)[1];
-                chatRoom = MESSAGE.split(" ", 3)[2];
-                roomName_ = chatRoom;
-
-                // need to handle leave slightly differenty
-                // assuming just join msgs here
-                Room room = Room.getRoom( roomName_ );
-                room.addClientSocket( clientSocket_ );
-
-                JsonString += "{" + "\"" + "type" + "\"" + ": " + "\"" + typeOfPayload + "\", " +
-                        "\"" + "room" + "\"" + ": " + "\"" + roomName_ + "\", " + "\"" + "timeStamp" + "\"" + ": " + "\"" +
-                        timeStamp + "\", " + "\"" + "user" + "\"" + ": " + "\"" + UserName + "\"" + "}";
-
-                System.out.println("Json String is" + JsonString);
-
-            }
-            return JsonString;
-        }
-        return null;
-    }*/
-
     public void respondWsRequest() throws IOException {
 
         String JsonMessageToClient = getJsonMessage();

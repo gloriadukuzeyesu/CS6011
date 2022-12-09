@@ -7,9 +7,6 @@ public class VFSineWave implements AudioComponent{
 
     AudioComponent input_;
 
-    VFSineWave () {
-    }
-
     @Override
     public AudioClip getClip() {
         AudioClip vf_SineWave = new AudioClip();

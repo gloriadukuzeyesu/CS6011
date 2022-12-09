@@ -82,4 +82,8 @@ function animateBackground(){
     }
 }
 
+// this method also works when you want to switch between colors.
+// document.getElementById(‘lightBtn’).addEventListener(‘click’, function () {
+//     document.body.style.backgroundColor = document.body.style.backgroundColor === “white” ? “gray” : “white”;
+// });
 

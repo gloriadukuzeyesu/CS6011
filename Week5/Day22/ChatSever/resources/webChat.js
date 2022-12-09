@@ -51,22 +51,25 @@ function handleMessage ( event ) {
     let user = messageObject.user;
     let room = messageObject.room;
 
+    let today = new Date();
+    let format = today.getHours() + ":" + today.getMinutes()
+
     let dashboard = document.getElementById("chatDashboard");
     if( type === "join") {
         let messageList1 = document.createElement('li');
-        let messageItemText1 = document.createTextNode (user  + " has joined the " + room );
+        let messageItemText1 = document.createTextNode (user  + " has joined the " + room + "  "+format);
         messageList1.appendChild(messageItemText1);
         dashboard.appendChild(messageList1);
     } else if ( type === "message") {
         // display user and their message in the dashboard 
         let messageList2 = document.createElement('li');
-        let messageItemText2 = document.createTextNode (user +" : " + messageObject.message);
+        let messageItemText2 = document.createTextNode (user +" : " + messageObject.message + "  "+format);
         messageList2.appendChild(messageItemText2);
         dashboard.appendChild(messageList2);
     } else if ( type === "leave") {
         //dispaly user left the room 
         let messageList3 = document.createElement('li');
-        let messageItemText3 = document.createTextNode (user +" has left the " + room);
+        let messageItemText3 = document.createTextNode (user +" has left the " + room + "  "+format);
         messageList3.appendChild(messageItemText3);
         dashboard.appendChild(messageList3);
     }

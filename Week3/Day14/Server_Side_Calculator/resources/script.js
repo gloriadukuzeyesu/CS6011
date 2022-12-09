@@ -63,7 +63,7 @@ function handleKeypressedCB ( event ) {
         }
          /**************** AJAX version *****************/
         let httpRequest = new XMLHttpRequest();
-        httpRequest.open ("GET", "http://localhost:8080/calculate?x=" + x + "&y=" + y);
+        httpRequest.open("GET", "http://localhost:8080/calculate?x=" + x + "&y=" + y);
         httpRequest.addEventListener( "error", handleAjaxErrorCB );
         httpRequest.addEventListener( "load", handleAjaxSuccessCB );
         httpRequest.send();

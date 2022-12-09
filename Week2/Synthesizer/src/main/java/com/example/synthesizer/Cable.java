@@ -14,7 +14,7 @@ public class Cable {
     ArrayList<AudioComponent> audioComponent_;
     protected AnchorPane parent = AudioComponentWidgetBase.parent_;
 //    protected Line line = AudioComponentWidgetBase.line_;
-    protected AudioComponentWidgetBase audioComponentWidgetBase = new AudioComponentWidgetBase();
+//    protected AudioComponentWidgetBase audioComponentWidgetBase = new AudioComponentWidgetBase();
 
     Cable() {}
 
